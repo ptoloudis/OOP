@@ -19,57 +19,63 @@ class Trie {
     public void insert(String word) {
         word = word.toLowerCase();
 
-        if (search(word) == true) {
+        if (search(word)) {
             System.out.println("ADD word NOK");
             return;
         }
 
         TrieNode current = root;
-        int i =0, j =0, pos =0;
+        int i = 0, j, index;
+        while (i < word.length() && current.edge[word.charAt(i) - Case] != null) {
 
-        while (word.length() > i && current.edge[word.charAt(i)- Case] != null) {
-            pos = word.charAt(i) - Case;
+            index = word.charAt(i) - Case;
             j = 0;
+            StringBuffer label = current.edge[index];
 
-            StringBuffer label = current.edge[pos];
-            while (j < label.length() && label.charAt(j) == word.charAt(i)) {
-                j++;
+            while (j < label.length() && i < word.length() && label.charAt(j) == word.charAt(i)) {
                 i++;
+                j++;
             }
 
+            // If is the same as the
+            // label length
             if (j == label.length()) {
-                current = current.children[pos];
+                current = current.children[index];
             }
             else {
-                if(i == word.length()) {
-                    TrieNode existingNode = current.children[pos];
-                    TrieNode newNode = new TrieNode(true);
+
+                if (i == word.length()) {
+                    TrieNode existingChild = current.children[index];
+                    TrieNode newChild = new TrieNode(true);
                     StringBuffer remaining = strCopy(label, j);
-                    current.children[pos] = newNode;
-                    newNode.children[remaining.charAt(0) - Case] = existingNode;
-                    newNode.edge[word.charAt(i) - Case] = remaining;
+
+                    label.setLength(j);
+
+                    current.children[index] = newChild;
+                    newChild.children[remaining.charAt(0) - Case] = existingChild;
+                    newChild.edge[remaining.charAt(0) - Case] = remaining;
+
                 }
                 else {
-                    StringBuffer remaining = strCopy(label, j);
-                    TrieNode newNode = new TrieNode(false);
-                    StringBuffer remainingWord = strCopy(word, j);
 
-                    TrieNode  temp = current.children[pos];
+
+                    StringBuffer remaining  = strCopy(label, j);
+                    TrieNode newChild = new TrieNode(false);
+                    StringBuffer remainingWord = strCopy(word, i);
+                    TrieNode temp = current.children[index];
+
                     label.setLength(j);
-                    current.children[pos] = newNode;
-
-                    newNode.edge[remaining.charAt(0) - Case] = remainingWord;
-                    newNode.edge[remainingWord.charAt(0) - Case] = remaining;
-
-                    newNode.children[remaining.charAt(0) - Case] = new TrieNode(true);
-                    newNode.children[remainingWord.charAt(0) - Case] = temp;
-
+                    current.children[index] = newChild;
+                    newChild.edge[remaining.charAt(0) - Case] = remaining;
+                    newChild.children[remaining.charAt(0) - Case] = temp;
+                    newChild.edge[remainingWord.charAt(0)- Case] = remainingWord;
+                    newChild.children[remainingWord.charAt(0)- Case] = new TrieNode(true);
                 }
                 System.out.println("ADD word OK");
                 return;
             }
-
         }
+
         if (i < word.length()) {
             current.edge[word.charAt(i) - Case] = strCopy(word, i);
             current.children[word.charAt(i) - Case] = new TrieNode(true);
@@ -89,7 +95,9 @@ class Trie {
     }
 
     public void print_dictionary(){
+        System.out.println("***** Dictionary *****");
         printUtil(root, new  StringBuffer());
+        System.out.println();
     }
 
     private void printUtil(TrieNode current, StringBuffer str) {
@@ -97,7 +105,7 @@ class Trie {
             System.out.println(str);
         }
         for (int i = 0; i < root.edge.length; ++i) {
-            if (current.children[i] != null) {
+            if (current.edge[i] != null) {
                 int length = str.length();
 
                 str = str.append(current.edge[i]);
@@ -111,15 +119,15 @@ class Trie {
     public boolean search(String word) {
         word = word.toLowerCase();
         TrieNode current = root;
-        int i =0, j =0, pos =0;
+        int i =0, j , pos ;
 
         while (word.length() > i && current.edge[word.charAt(i)- Case] != null) {
             pos = word.charAt(i) - Case;
             StringBuffer label = current.edge[pos];
             j = 0;
 
-            while (j < word.length() && j < label.length()) {
-                if (word.charAt(j) != label.charAt(i)) {
+            while (i < word.length() && j < label.length()) {
+                if (word.charAt(i) != label.charAt(j)) {
                     return false;
                 }
                 j++;
@@ -133,126 +141,142 @@ class Trie {
                 return false;
             }
         }
-        return i == word.length() && current.isEndOfWord;
+        return (i == word.length() && current.isEndOfWord);
     }
 
     public void delete(String word) {
         word = word.toLowerCase();
         TrieNode current = root;
-        int i =0, j =0, pos =0;
+        int i =0, j , pos ;
 
         while (word.length() > i && current.edge[word.charAt(i)- Case] != null) {
             pos = word.charAt(i) - Case;
+            StringBuffer label = current.edge[pos];
             j = 0;
 
-            while (j < word.length() && word.charAt(j) == word.charAt(i)) {
-                if (word.charAt(j) != word.charAt(i)) {
-                    System.out.println("DEL word NOK");
-                }
-                j++;
-                i++;
-            }
-
-            if (j == word.length() && i <= word.length()) {
-                current = current.children[pos];
-            }
-            else {
-                System.out.println("DEL word NOK");
-            }
-
-        }
-
-        if((i == word.length() && current.isEndOfWord) == true) {
-            current.isEndOfWord = false;
-            System.out.println("DEL word OK");
-        }
-        else {
-            System.out.println("DEL word NOK");
-        }
-    }
-
-    public void print_preOrder() {
-        System.out.println("PreOrder: ");
-        printPreOrder(root);
-        System.out.println();
-    }
-
-    private void printPreOrder(TrieNode current){
-        if(current.isEndOfWord){
-            if(current.isFinal() == true){
-                System.out.print("(T)");
-            }
-            System.out.println(current.edge+" ");
-        }
-        for(int i = 0; i < root.edge.length; ++i){
-            if(current.children[i] != null){
-                printPreOrder(current.children[i]);
-            }
-        }
-    }
-
-    public void suffix_all(String word) {
-        suffix(word);
-        System.out.println();
-    }
-
-    private void suffix(String word) {
-        word = word.toLowerCase();
-        TrieNode current = root;
-        int i =0, j =0, pos =0;
-
-        while (word.length() > i && current.edge[word.charAt(i)- Case] != null) {
-            pos = word.charAt(i) - Case;
-            j = 0;
-
-            while (j < word.length() && word.charAt(j) == word.charAt(i)) {
-                if (word.charAt(j) == word.charAt(i)) {
+            while (i < word.length() && j < label.length()) {
+                if (word.charAt(i) != label.charAt(j)) {
                     return;
                 }
                 j++;
                 i++;
             }
 
-            if (j == word.length() && i <= word.length()) {
+            if (j == label.length() && i <= word.length()) {
                 current = current.children[pos];
             }
             else {
                 return;
             }
-
         }
-
-        if((i == word.length() && current.isEndOfWord) == true) {
-            System.out.println();
-            System.out.println("Word is a suffix " + word + ":");
-            System.out.println(current.edge);
-        }
-        else {
-            return;
+        if (i == word.length() && current.isEndOfWord) {
+            current.isEndOfWord = false;
         }
     }
 
-    public void printDot( ) throws FileNotFoundException {
-        PrintWriter wr = new PrintWriter(new File("trie.dot"));
-        System.out.println("digraph G {");
-        print_dot(wr, root, new  StringBuffer());
-        System.out.println("}");
+    public void print_preOrder() {
+        System.out.print("PreOrder: ");
+        printPreOrder(root, new StringBuffer());
+        System.out.println("\n");
     }
 
-    private void print_dot(PrintWriter wr, TrieNode current, StringBuffer str){
-        if (current.isEndOfWord) {
-            wr.print(str);
+    private void printPreOrder(TrieNode current, StringBuffer str) {
+        if(current.isEndOfWord){
+            if(current.isFinal()){
+                System.out.print("(T)");
+            }
+            System.out.print(str+" ");
         }
         for (int i = 0; i < root.edge.length; ++i) {
             if (current.children[i] != null) {
                 int length = str.length();
 
                 str = str.append(current.edge[i]);
-                printUtil(current.children[i], str);
+                printPreOrder(current.children[i], str);
                 str = str.delete(length, str.length());
+
             }
         }
     }
 
-//    TODO: make -w word X
+    public void suffix_all(String word) {
+        suffix(word);
+    }
+
+    private void suffix(String word) {
+        word = word.toLowerCase();
+        TrieNode current = root;
+        int i =0, j , pos ;
+
+        while (word.length() > i && current.edge[word.charAt(i)- Case] != null) {
+            pos = word.charAt(i) - Case;
+            StringBuffer label = current.edge[pos];
+            j = 0;
+
+            while (i < word.length() && j < label.length()) {
+                if (word.charAt(i) != label.charAt(j)) {
+                    return;
+                }
+                j++;
+                i++;
+            }
+
+            if (j == label.length() && i <= word.length()) {
+                current = current.children[pos];
+            }
+            else {
+                return;
+            }
+        }
+        if (i == word.length() && current.isEndOfWord) {
+            current.isEndOfWord = false;
+        }
+    }
+
+    //    TODO: make -w word X
+    public void distant(String word, int x) {
+        word = word.toLowerCase();
+        System.out.println("Distant words of " +word +"("+x +"):");
+        print_distant(root, word, new StringBuffer(), x);
+        System.out.println();
+    }
+
+    private void print_distant(TrieNode current, String str, StringBuffer str_d, int x) {
+        if(current.isEndOfWord && str_d.length() == str.length()){
+            if(stringCompare(str, str_d.toString()) == x ){
+                System.out.println(str_d);
+            }
+
+        }
+        for (int i = 0; i < root.edge.length; ++i) {
+            if (current.children[i] != null) {
+                int length = str_d.length();
+
+                str_d = str_d.append(current.edge[i]);
+                print_distant(current.children[i], str, str_d, x);
+                str_d = str_d.delete(length, str_d.length());
+
+            }
+        }
+    }
+
+    private int stringCompare(String str1, String str2){
+        int count = 0;
+        int l1 = str1.length();
+        int l2 = str2.length();
+        int min = Math.min(l1, l2);
+
+        for (int i = 0; i < min; i++) {
+            int str1_ch = str1.charAt(i);
+            int str2_ch = str2.charAt(i);
+
+            if (str1_ch != str2_ch) {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
 }
+

@@ -10,48 +10,45 @@ public class HW1 {
         boolean flag;
         Scanner sc = new Scanner(System.in);
         String input,word;
+        int size;
 
         while (true) {
             System.out.print("?:");
 
             input = sc.next();
             switch (input) {
-                case "-i":
+                case "-i" -> {
                     word = sc.next();
                     tmp.insert(word);
-                    break;
-                case "-r":
+                }
+                case "-r" -> {
                     word = sc.next();
                     tmp.delete(word);
-                    break;
-                case "-f":
+                }
+                case "-f" -> {
                     word = sc.next();
                     flag = tmp.search(word);
                     if (flag) {
                         System.out.println("FND word OK");
-                    }
-                    else {
+                    } else {
                         System.out.println("FND word NOK");
                     }
-                    break;
-                case "-p":
-                    tmp.print_preOrder();
-                    break;
-                case "-d":
-                    tmp.print_dictionary();
-                    break;
-                case "-w":
-//                        TODO: -w command
-                    break;
-                case "-s":
+                }
+                case "-p" -> tmp.print_preOrder();
+                case "-d" -> tmp.print_dictionary();
+                case "-w" -> {
+                    word = sc.next();
+                    size = sc.nextInt();
+                    tmp.distant(word, size);
+                }
+                case "-s" -> {
                     word = sc.next();
                     tmp.suffix_all(word);
-                    break;
-                case "-t":
-
-                case "-q":
+                }
+                case "-t", "-q" -> {
                     System.out.println("Bye bye!");
                     System.exit(0);
+                }
             }
         }
     }
