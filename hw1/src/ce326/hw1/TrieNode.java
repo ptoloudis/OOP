@@ -24,4 +24,13 @@ public class TrieNode {
         return true;
     }
 
+    public int totalChildren() {
+        int count = 0;
+        for (int i = 0; i < 26; i++) {
+            if (children[i] != null) {
+                count++;
+            }
+        }
+        return count;
+    }
 }
