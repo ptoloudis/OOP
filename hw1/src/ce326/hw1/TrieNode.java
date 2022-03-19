@@ -33,4 +33,14 @@ public class TrieNode {
         }
         return count;
     }
+
+    public int position_edge() {
+        for (int i = 0; i < 26; i++) {
+            if (edge[i] != null) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
 }

@@ -1,15 +1,9 @@
 package ce326.hw1;
 
-//  Library imports
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-
-
 // Class definition for Trie
 class Trie {
     private TrieNode root ;
-    private char Case ;
+    final private char Case ;
 
     public Trie() {
         root = new TrieNode(false);
@@ -20,7 +14,7 @@ class Trie {
         word = word.toLowerCase();
 
         if (search(word)) {
-            System.out.println("ADD word NOK");
+            System.out.println("ADD "+word+" NOK");
             return;
         }
 
@@ -71,7 +65,7 @@ class Trie {
                     newChild.edge[remainingWord.charAt(0)- Case] = remainingWord;
                     newChild.children[remainingWord.charAt(0)- Case] = new TrieNode(true);
                 }
-                System.out.println("ADD word OK");
+                System.out.println("ADD "+word+" OK");
                 return;
             }
         }
@@ -83,8 +77,8 @@ class Trie {
         else {
             current.setIsEnd(true);
         }
-        System.out.println("ADD word OK");
-    }
+        System.out.println("ADD "+word+" OK");
+}
 
     private StringBuffer strCopy(CharSequence str, int pos) {
         StringBuffer temp = new StringBuffer(100);
@@ -95,6 +89,7 @@ class Trie {
     }
 
     public void print_dictionary(){
+        System.out.println("\n");
         System.out.println("***** Dictionary *****");
         printUtil(root, new  StringBuffer());
         System.out.println();
@@ -108,9 +103,9 @@ class Trie {
             if (current.edge[i] != null) {
                 int length = str.length();
 
-                str = str.append(current.edge[i]);
+                str.append(current.edge[i]);
                 printUtil(current.children[i], str);
-                str = str.delete(length, str.length());
+                str.delete(length, str.length());
 
             }
         }
@@ -146,6 +141,10 @@ class Trie {
 
     public void delete(String word) {
         word = word.toLowerCase();
+        if (!search(word)) {
+            System.out.println("RMV "+word+" NOK");
+        }
+
         TrieNode current = root;
         int i =0, j , pos ;
 
@@ -155,85 +154,95 @@ class Trie {
             j = 0;
 
             while (i < word.length() && j < label.length()) {
-                if (word.charAt(i) != label.charAt(j)) {
-                    return;
-                }
+                if (word.charAt(i) != label.charAt(j)) { }
                 j++;
                 i++;
+            }
+
+            if (j == label.length() && i == word.length() && current.children[pos].isFinal()) {
+                current.edge[pos] = null;
+                current.children[pos] = null;
             }
 
             if (j == label.length() && i <= word.length()) {
                 current = current.children[pos];
             }
             else {
-                return;
+                System.out.println("RMV "+word+" NOK");
             }
         }
-        if (i == word.length() && current.isEndOfWord) {
-            current.isEndOfWord = false;
+        if (current != null){
+            if (i == word.length() && current.isEndOfWord) {
+                current.isEndOfWord = false;
+            }
+        }
+
+        compress_dictionary(root,root,0);
+        System.out.println("RMV "+word+" OK");
+
+    }
+
+    private void compress_dictionary(TrieNode current,TrieNode parent, int pos) {
+        if (current.isFinal()){
+            return;
+        }
+        for (int i = 0; i < 26; ++i) {
+            if (current.children[i] != null) {
+                TrieNode tmp = current.children[i];
+                compress_dictionary(tmp, current, i);
+                if (current.totalChildren() == 1 && !current.isEndOfWord &&  current != root) {
+                    parent.edge[pos].append(current.edge[i]);
+                    current.children = tmp.children;
+                    current.edge = tmp.edge;
+                    current.isEndOfWord = tmp.isEndOfWord;
+                }
+            }
         }
     }
 
     public void print_preOrder() {
         System.out.print("PreOrder: ");
-        printPreOrder(root, new StringBuffer());
-        System.out.println("\n");
+        printPreOrder(root);
+        System.out.println();
     }
 
-    private void printPreOrder(TrieNode current, StringBuffer str) {
-        if(current.isEndOfWord){
-            if(current.isFinal()){
-                System.out.print("(T)");
-            }
-            System.out.print(str+" ");
-        }
+    private void printPreOrder(TrieNode current) {
         for (int i = 0; i < root.edge.length; ++i) {
             if (current.children[i] != null) {
-                int length = str.length();
+                if (current.children[i].isEndOfWord) {
+                    System.out.print(current.edge[i]+"# ");
+                }
+                else {
+                    System.out.print(current.edge[i]+" ");
+                }
 
-                str = str.append(current.edge[i]);
-                printPreOrder(current.children[i], str);
-                str = str.delete(length, str.length());
-
+                printPreOrder(current.children[i]);
             }
         }
     }
 
     public void suffix_all(String word) {
-        suffix(word);
-    }
-
-    private void suffix(String word) {
         word = word.toLowerCase();
-        TrieNode current = root;
-        int i =0, j , pos ;
-
-        while (word.length() > i && current.edge[word.charAt(i)- Case] != null) {
-            pos = word.charAt(i) - Case;
-            StringBuffer label = current.edge[pos];
-            j = 0;
-
-            while (i < word.length() && j < label.length()) {
-                if (word.charAt(i) != label.charAt(j)) {
-                    return;
-                }
-                j++;
-                i++;
-            }
-
-            if (j == label.length() && i <= word.length()) {
-                current = current.children[pos];
-            }
-            else {
-                return;
-            }
-        }
-        if (i == word.length() && current.isEndOfWord) {
-            current.isEndOfWord = false;
-        }
+        suffix(word, root, new StringBuffer());
     }
 
-    //    TODO: make -w word X
+    private void suffix(String word,TrieNode current ,StringBuffer str) {
+        if (current.isEndOfWord && (str.lastIndexOf(word) == -1)) {
+            System.out.println(str);
+        }
+        for (int i = 0; i < root.edge.length; ++i) {
+            if (current.edge[i] != null) {
+                int length = str.length();
+
+                str.append(current.edge[i]);
+                printUtil(current.children[i], str);
+                str.delete(length, str.length());
+
+            }
+        }
+
+    }
+
     public void distant(String word, int x) {
         word = word.toLowerCase();
         System.out.println("Distant words of " +word +"("+x +"):");
@@ -252,9 +261,9 @@ class Trie {
             if (current.children[i] != null) {
                 int length = str_d.length();
 
-                str_d = str_d.append(current.edge[i]);
+                str_d.append(current.edge[i]);
                 print_distant(current.children[i], str, str_d, x);
-                str_d = str_d.delete(length, str_d.length());
+                str_d.delete(length, str_d.length());
 
             }
         }

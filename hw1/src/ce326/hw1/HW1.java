@@ -4,7 +4,6 @@ package ce326.hw1;
 import java.util.Scanner;
 
 public class HW1 {
-
     public static void main(String[] args) {
         Trie tmp = new Trie();
         boolean flag;
@@ -13,7 +12,7 @@ public class HW1 {
         int size;
 
         while (true) {
-            System.out.print("?:");
+            System.out.println("?: ");
 
             input = sc.next();
             switch (input) {
@@ -29,9 +28,9 @@ public class HW1 {
                     word = sc.next();
                     flag = tmp.search(word);
                     if (flag) {
-                        System.out.println("FND word OK");
+                        System.out.println("FND "+word.toLowerCase()+" OK");
                     } else {
-                        System.out.println("FND word NOK");
+                        System.out.println("FND "+word.toLowerCase()+" NOK");
                     }
                 }
                 case "-p" -> tmp.print_preOrder();
@@ -52,5 +51,4 @@ public class HW1 {
             }
         }
     }
-
 }
