@@ -89,7 +89,7 @@ class Trie {
     }
 
     public void print_dictionary(){
-        System.out.println("\n");
+        System.out.println();
         System.out.println("***** Dictionary *****");
         printUtil(root, new  StringBuffer());
         System.out.println();
@@ -143,9 +143,11 @@ class Trie {
         word = word.toLowerCase();
         if (!search(word)) {
             System.out.println("RMV "+word+" NOK");
+            return;
         }
 
         TrieNode current = root;
+        boolean delete = true;
         int i =0, j , pos ;
 
         while (word.length() > i && current.edge[word.charAt(i)- Case] != null) {
@@ -154,7 +156,6 @@ class Trie {
             j = 0;
 
             while (i < word.length() && j < label.length()) {
-                if (word.charAt(i) != label.charAt(j)) { }
                 j++;
                 i++;
             }
@@ -168,6 +169,7 @@ class Trie {
                 current = current.children[pos];
             }
             else {
+                delete = false;
                 System.out.println("RMV "+word+" NOK");
             }
         }
@@ -177,8 +179,12 @@ class Trie {
             }
         }
 
-        compress_dictionary(root,root,0);
-        System.out.println("RMV "+word+" OK");
+        if (root != null) {
+            compress_dictionary(root, root, 0);
+        }
+
+        if (delete)
+            System.out.println("RMV "+word+" OK");
 
     }
 
@@ -223,11 +229,14 @@ class Trie {
 
     public void suffix_all(String word) {
         word = word.toLowerCase();
+        System.out.println();
+        System.out.println("Words with suffix "+word+":");
         suffix(word, root, new StringBuffer());
+        System.out.println();
     }
 
-    private void suffix(String word,TrieNode current ,StringBuffer str) {
-        if (current.isEndOfWord && (str.lastIndexOf(word) == -1)) {
+    private void suffix(String word, TrieNode current ,StringBuffer str) {
+        if (current.isEndOfWord && (str.lastIndexOf(word) != -1)) {
             System.out.println(str);
         }
         for (int i = 0; i < root.edge.length; ++i) {
@@ -235,7 +244,7 @@ class Trie {
                 int length = str.length();
 
                 str.append(current.edge[i]);
-                printUtil(current.children[i], str);
+                suffix(word, current.children[i], str);
                 str.delete(length, str.length());
 
             }
@@ -245,7 +254,8 @@ class Trie {
 
     public void distant(String word, int x) {
         word = word.toLowerCase();
-        System.out.println("Distant words of " +word +"("+x +"):");
+        System.out.println();
+        System.out.println("Distant words of "+word+" ("+x +"):");
         print_distant(root, word, new StringBuffer(), x);
         System.out.println();
     }
