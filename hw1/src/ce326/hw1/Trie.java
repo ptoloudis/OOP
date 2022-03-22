@@ -236,7 +236,7 @@ class Trie {
     } //Start to print all words with end suffix word
 
     private void suffix(String word, TrieNode current ,StringBuffer str) {
-        if (current.isEndOfWord && (str.lastIndexOf(word) != -1)) {
+        if (current.isEndOfWord &&  endWith(word, str)) {
             System.out.println(str);
         }
         for (int i = 0; i < root.edge.length; ++i) {
@@ -251,6 +251,11 @@ class Trie {
         }
 
     } // Print all words with end suffix word
+
+    private boolean endWith(String word, StringBuffer str) {
+        String tmp = str.toString();
+        return tmp.endsWith(word);
+    } // Check if the word ends with the suffix
 
     public void distant(String word, int x) {
         word = word.toLowerCase();
