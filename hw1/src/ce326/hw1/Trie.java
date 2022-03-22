@@ -2,13 +2,13 @@ package ce326.hw1;
 
 // Class definition for Trie
 class Trie {
-    private TrieNode root ;
-    final private char Case ;
+    private TrieNode root ; // root of the trie
+    final private char Case ; // case sensitivity
 
     public Trie() {
         root = new TrieNode(false);
         this.Case = 'a';
-    }
+    } // initializes the trie
 
     public void insert(String word) {
         word = word.toLowerCase();
@@ -78,7 +78,7 @@ class Trie {
             current.setIsEnd(true);
         }
         System.out.println("ADD "+word+" OK");
-}
+} // inserts a word into the trie
 
     private StringBuffer strCopy(CharSequence str, int pos) {
         StringBuffer temp = new StringBuffer(100);
@@ -93,7 +93,7 @@ class Trie {
         System.out.println("***** Dictionary *****");
         printUtil(root, new  StringBuffer());
         System.out.println();
-    }
+    } // start to print the dictionary
 
     private void printUtil(TrieNode current, StringBuffer str) {
         if (current.isEndOfWord) {
@@ -109,7 +109,7 @@ class Trie {
 
             }
         }
-    }
+    } // print the dictionary
 
     public boolean search(String word) {
         word = word.toLowerCase();
@@ -137,7 +137,7 @@ class Trie {
             }
         }
         return (i == word.length() && current.isEndOfWord);
-    }
+    } // search a word in the trie
 
     public void delete(String word) {
         word = word.toLowerCase();
@@ -186,7 +186,7 @@ class Trie {
         if (delete)
             System.out.println("RMV "+word+" OK");
 
-    }
+    } // delete a word from the trie
 
     private void compress_dictionary(TrieNode current,TrieNode parent, int pos) {
         if (current.isFinal()){
@@ -204,13 +204,13 @@ class Trie {
                 }
             }
         }
-    }
+    } // compress the dictionary after deleting a word
 
     public void print_preOrder() {
         System.out.print("PreOrder: ");
         printPreOrder(root);
         System.out.println();
-    }
+    } // Start to print dictionary in preOrder
 
     private void printPreOrder(TrieNode current) {
         for (int i = 0; i < root.edge.length; ++i) {
@@ -225,7 +225,7 @@ class Trie {
                 printPreOrder(current.children[i]);
             }
         }
-    }
+    } // print the dictionary in preOrder
 
     public void suffix_all(String word) {
         word = word.toLowerCase();
@@ -233,10 +233,10 @@ class Trie {
         System.out.println("Words with suffix "+word+":");
         suffix(word, root, new StringBuffer());
         System.out.println();
-    }
+    } //Start to print all words with end suffix word
 
     private void suffix(String word, TrieNode current ,StringBuffer str) {
-        if (current.isEndOfWord && (str.lastIndexOf(word) != -1)) {
+        if (current.isEndOfWord &&  endWith(word, str)) {
             System.out.println(str);
         }
         for (int i = 0; i < root.edge.length; ++i) {
@@ -250,7 +250,12 @@ class Trie {
             }
         }
 
-    }
+    } // Print all words with end suffix word
+
+    private boolean endWith(String word, StringBuffer str) {
+        String tmp = str.toString();
+        return tmp.endsWith(word);
+    } // Check if the word ends with the suffix
 
     public void distant(String word, int x) {
         word = word.toLowerCase();
@@ -258,7 +263,7 @@ class Trie {
         System.out.println("Distant words of "+word+" ("+x +"):");
         print_distant(root, word, new StringBuffer(), x);
         System.out.println();
-    }
+    } // Start to print same length but with n different characters
 
     private void print_distant(TrieNode current, String str, StringBuffer str_d, int x) {
         if(current.isEndOfWord && str_d.length() == str.length()){
@@ -277,7 +282,7 @@ class Trie {
 
             }
         }
-    }
+    } // Print same length but with n different characters
 
     private int stringCompare(String str1, String str2){
         int count = 0;
@@ -295,7 +300,7 @@ class Trie {
         }
 
         return count;
-    }
+    } // Compare two strings
 
 }
 
