@@ -88,9 +88,9 @@ public class RGBImage implements Image {
         RGBPixel[][] newImage = new RGBPixel[newHeight][newWidth];
         for (int i = 0; i < newHeight; i++) {
             for (int j = 0; j < newWidth; j++) {
-                red = (short) (((image[2*i][2*j].getRed() + image[2*i + 1][2*j].getRed() + image[2*i][2*j + 1].getRed() + image[2*i + 1][2*j + 1].getRed()) / 4)+128);
-                green = (short) (((image[2*i][2*j].getGreen() + image[2*i + 1][2*j].getGreen() + image[2*i][2*j + 1].getGreen() + image[2*i + 1][2*j + 1].getGreen()) / 4)+128);
-                blue = (short) (((image[2*i][2*j].getBlue() + image[2*i + 1][2*j].getBlue() + image[2*i][2*j + 1].getBlue() + image[2*i + 1][2*j + 1].getBlue()) / 4)+128);
+                red = (short) ((image[2*i][2*j].getRed() + image[2*i + 1][2*j].getRed() + image[2*i][2*j + 1].getRed() + image[2*i + 1][2*j + 1].getRed()) / 4);
+                green = (short) ((image[2*i][2*j].getGreen() + image[2*i + 1][2*j].getGreen() + image[2*i][2*j + 1].getGreen() + image[2*i + 1][2*j + 1].getGreen()) / 4);
+                blue = (short) ((image[2*i][2*j].getBlue() + image[2*i + 1][2*j].getBlue() + image[2*i][2*j + 1].getBlue() + image[2*i + 1][2*j + 1].getBlue()) / 4);
                 newImage[i][j] = new RGBPixel(red, green, blue);
             }
         }
@@ -106,18 +106,20 @@ public class RGBImage implements Image {
         RGBPixel[][] newImage = new RGBPixel[newHeight][newWidth];
         for (int i = 0; i < newHeight; i++) {
             for (int j = 0; j < newWidth; j++) {
-                newImage[i][j] = image[j][newHeight - 1 - i];
+                newImage[i][j] = image[j][newHeight - i - 1];
             }
         }
-        this.image = newImage;
-        this.height = newHeight;
-        this.width = newWidth;
+        for (int i = 0; i < newHeight; i++) {
+            for (int j = 0; j < newWidth; j++) {
+                image[height - i -1][height - j -1] = newImage[i][j];
+            }
+        }
     }
 
-    //   Method Overrite Image
+    //   Method Override Image
     public String toString(){
         StringBuilder sb = new StringBuilder();
-        sb.append("Image: " + width + "x" + height + "x" + colordepth + "\n");
+        sb.append(width + " " + height + " " + colordepth + "\n");
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 sb.append(image[i][j].toString()+" ");

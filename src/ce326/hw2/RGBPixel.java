@@ -18,21 +18,37 @@ public class RGBPixel {
         this.blue = pixel.blue;
     }
 
-//    public  void RGBPixel(YUVPixel pixel){
-//        System.out.println("YUVPixel");
-//    }
+    public  void RGBPixel(YUVPixel pixel){
+        int C = pixel.getY() - 16;
+        int D = pixel.getU() - 128;
+        int E = pixel.getV() - 128;
+
+        this.red = (byte) clip((298 * C + 409 * E + 128)>>8);
+        this.green = (byte) clip(298 * C - 100 * D - 208 * E + 128);
+        this.blue = (byte) clip(298 * C + 516 * D + 128);
+
+    }
 
 //    Method from RGBPixel
+    private short clip(int x) {
+        if (x < 0)
+            return 0;
+        else if (x > 255)
+            return 255;
+        else
+            return (short) x;
+    }
+
     public short getRed() {
-        return (short) this.red;
+        return (short) (((short) this.red) + 128);
     }
 
     public short getGreen() {
-        return (short) this.green;
+        return (short) (((short) this.green) + 128);
     }
 
     public short getBlue() {
-        return (short) this.blue;
+        return (short) (((short) this.blue) + 128);
     }
 
     public void setRed(short red) {
@@ -52,9 +68,9 @@ public class RGBPixel {
     }
 
     void setRGB(int value) {
-        this.red = (byte) ((value >> 16) & 0xFF);
-        this.green = (byte) ((value >> 8) & 0xFF);
-        this.blue = (byte) (value & 0xFF);
+        this.red = (byte) ((value >> 16) & 0xFF - 128);
+        this.green = (byte) ((value >> 8) & 0xFF - 128);
+        this.blue = (byte) (value & 0xFF - 128);
     }
 
     final void setRGB(short red, short green, short blue) {
@@ -65,8 +81,7 @@ public class RGBPixel {
 
     @Override
     public String toString() {
-        return (this.red +" "+ this.green +" "+this.blue
-        );
+        return ((this.red +128) +" "+ (this.green +128) +" "+ (this.blue +128));
     }
 
 }
