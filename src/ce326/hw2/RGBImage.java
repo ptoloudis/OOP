@@ -4,7 +4,7 @@ public class RGBImage implements Image {
     private int width;
     private int height;
     private int colordepth;
-    final int MAX_COLORDEPTH = 255;
+    static final int MAX_COLORDEPTH = 255;
     private RGBPixel[][] image;
 
 //    Constructor for RGBImage
@@ -18,7 +18,7 @@ public class RGBImage implements Image {
         this.width = width;
         this.height = height;
         this.colordepth = colordepth;
-        image = new RGBPixel[height][width];
+        image = new RGBPixel[width][height];
     }
 
     public RGBImage(RGBImage copyImage){
@@ -33,13 +33,30 @@ public class RGBImage implements Image {
         }
     }
 
+    public RGBImage(YUVImage yuvImage) {
+        RGBPixel rgbPixel;
+        YUVPixel yuvPixel;
+        width = yuvImage.width;
+        height = yuvImage.height;
+        colordepth = MAX_COLORDEPTH;
+        image = new RGBPixel[height][width];
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                yuvPixel = yuvImage.image[i][j];
+                rgbPixel = new RGBPixel(yuvPixel);
+                image[i][j] = rgbPixel;
+
+            }
+        }
+    }
+
 //    Method from RGBImage
     public int getWidth() {
-        return width;
+        return this.width;
     }
 
     public int getHeight() {
-        return height;
+        return this.height;
     }
 
     public int getColorDepth() {

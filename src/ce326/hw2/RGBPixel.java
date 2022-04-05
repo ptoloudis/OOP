@@ -18,7 +18,7 @@ public class RGBPixel {
         this.blue = pixel.blue;
     }
 
-    public  void RGBPixel(YUVPixel pixel){
+    public RGBPixel(YUVPixel pixel) {
         int C = pixel.getY() - 16;
         int D = pixel.getU() - 128;
         int E = pixel.getV() - 128;
@@ -26,8 +26,8 @@ public class RGBPixel {
         this.red = (byte) clip((298 * C + 409 * E + 128)>>8);
         this.green = (byte) clip(298 * C - 100 * D - 208 * E + 128);
         this.blue = (byte) clip(298 * C + 516 * D + 128);
-
     }
+
 
 //    Method from RGBPixel
     private short clip(int x) {

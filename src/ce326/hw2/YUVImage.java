@@ -43,27 +43,55 @@ public class YUVImage {
         }
     }
 
+    public YUVImage(java.io.File file) throws FileNotFoundException, UnsupportedFileFormatException {
+        if (!file.exists()){
+            throw new FileNotFoundException();
+        }
+
+        Scanner sc = new Scanner(file);
+        String line = sc.next();
+        if (!line.equals("YUV3")) {
+            throw new UnsupportedFileFormatException();
+        }
+        this.width = Integer.parseInt(sc.next());
+        this.height = Integer.parseInt(sc.next());
+        this.image = new YUVPixel[height][width];
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                this.image[i][j] = new YUVPixel((short) 0, (short) 0, (short) 0);
+            }
+        }
+
+
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                short y = Short.parseShort(sc.next());
+                short u = Short.parseShort(sc.next());
+                short v = Short.parseShort(sc.next());
+                this.image[i][j].setY(y);
+                this.image[i][j].setU(u);
+                this.image[i][j].setV(v);
+
+            }
+        }
+    }
+
     // Method
-    public void egualize(){
+    public void equalize(){
         Histogram hist = new Histogram(this);
         hist.equalize();
     }
 
-    public void toFile(java.io.File file) throws FileNotFoundException, UnsupporedFileFormatExtesion {
-        Scanner sc = new Scanner(file);
-        String line = sc.next();
-        if (line.equals("YUV")) {
-            throw new UnsupporedFileFormatExtesion();
+    public void toFile(java.io.File file) {
+        if (file.exists()) {
+            file.delete();
         }
-        this.width = sc.nextInt();
-        this.height = sc.nextInt();
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                short y = sc.nextShort();
-                short u = sc.nextShort();
-                short v = sc.nextShort();
-                image[i][j] = new YUVPixel(y, u, v);
-            }
+        try {
+            file.createNewFile();
+            FileWriter fw = new FileWriter(file);
+            fw.write(this.image.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
