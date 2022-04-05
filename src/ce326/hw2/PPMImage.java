@@ -9,7 +9,7 @@ public class PPMImage extends RGBImage {
 
 //    Constructor
     public PPMImage(java.io.File fileName) throws FileNotFoundException, UnsupportedFileFormatException {
-        super(width, height, sc.nextInt());
+        super();
         if ( !fileName.exists() || !fileName.canRead()) {
             throw new FileNotFoundException();
         }
@@ -20,29 +20,28 @@ public class PPMImage extends RGBImage {
         }
 
         this.file = fileName;
-        int width = sc.nextInt();
-        int height = sc.nextInt();
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                super.setPixel(i, j, new RGBPixel(sc.nextShort(), sc.nextShort(), sc.nextShort()));
+        super.width = sc.nextInt();
+        super.height = sc.nextInt();
+        super.colordepth = sc.nextInt();
+        super.image = new RGBPixel[super.height][super.width];
+        for (int i = 0; i < super.height; i++) {
+            for (int j = 0; j < super.width; j++) {
+                super.image[i][j] = new RGBPixel(sc.nextShort(), sc.nextShort(), sc.nextShort());
             }
         }
 
     }
 
     public PPMImage(RGBImage image)  {
-        this.photo.append("P3\n");
-        String str_image = image.toString();
-        this.photo.append(str_image);
+        super(image);
     }
 
     public PPMImage(YUVImage image){
-        this.photo.append("P3\n");
-        String str_image = image.toString();
-        this.photo.append(str_image);
+       super(image);
     }
 
 //  Method
+
     public String toString() {
         String str = "";
         try {
@@ -64,7 +63,16 @@ public class PPMImage extends RGBImage {
         try {
             file.createNewFile();
             FileWriter fw = new FileWriter(file);
-            fw.write(this.photo.toString());
+            fw.write("P3\n");
+            StringBuilder sb = new StringBuilder();
+            sb.append(super.width + " " + super.height + " " + super.colordepth + "\n");
+            for (int i = 0; i < super.height; i++) {
+                for (int j = 0; j < super.width; j++) {
+                    sb.append(super.image[i][j].toString()+"\n");
+                }
+            }
+            fw.write(sb.toString());
+            fw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

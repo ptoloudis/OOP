@@ -14,8 +14,8 @@ public class Histogram {
         size = image.height * image.width;
         histogram = new int[256];
         short x;
-        for (int i = 0; i < image.width; i++) {
-            for (int j = 0; j < image.height; j++) {
+        for (int i = 0; i < image.height; i++) {
+            for (int j = 0; j < image.width; j++) {
                 x = image.image[i][j].getY();
                 histogram[x]++;
             }
@@ -78,8 +78,8 @@ public class Histogram {
             histogram[i]= (int) (235 *cdf[i]);
         }
 
-        for (int i = 0; i < image.width; i++) {
-            for (int j = 0; j < image.height; j++) {
+        for (int i = 0; i < image.height; i++) {
+            for (int j = 0; j < image.width; j++) {
                 x = image.image[i][j].getY();
                 image.image[i][j].setY((short) histogram[x]);
             }

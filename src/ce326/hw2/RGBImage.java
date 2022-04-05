@@ -1,24 +1,20 @@
 package ce326.hw2;
 
 public class RGBImage implements Image {
-    private int width;
-    private int height;
-    private int colordepth;
+    int width;
+    int height;
+    int colordepth;
     static final int MAX_COLORDEPTH = 255;
-    private RGBPixel[][] image;
+    RGBPixel[][] image;
 
 //    Constructor for RGBImage
-    public RGBImage(){
-        width = 0;
-        height = 0;
-        colordepth = 0;
-    }
+    public RGBImage(){}
 
-    public RGBImage(int width, int height, int colordepth) {
+    public RGBImage(int height , int width , int colordepth) {
         this.width = width;
         this.height = height;
         this.colordepth = colordepth;
-        image = new RGBPixel[width][height];
+        image = new RGBPixel[height][width];
     }
 
     public RGBImage(RGBImage copyImage){
@@ -64,7 +60,7 @@ public class RGBImage implements Image {
     }
 
     public RGBPixel getPixel(int row, int col) {
-        return image[row][col];
+        return this.image[row][col];
     }
 
     public void setPixel(int row, int col, RGBPixel pixel) {
@@ -126,20 +122,17 @@ public class RGBImage implements Image {
                 newImage[i][j] = image[j][newHeight - i - 1];
             }
         }
-        for (int i = 0; i < newHeight; i++) {
-            for (int j = 0; j < newWidth; j++) {
-                image[height - i -1][height - j -1] = newImage[i][j];
-            }
-        }
+        this.image = newImage;
     }
 
     //   Method Override Image
+    @Override
     public String toString(){
         StringBuilder sb = new StringBuilder();
         sb.append(width + " " + height + " " + colordepth + "\n");
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                sb.append(image[i][j].toString()+" ");
+                sb.append(image[i][j].toString()+"\n");
             }
             sb.append("\n");
         }

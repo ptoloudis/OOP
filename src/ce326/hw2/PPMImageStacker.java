@@ -40,7 +40,7 @@ public class PPMImageStacker {
                     width = Integer.parseInt( scanner.next());
                     height = Integer.parseInt( scanner.next());
                     max = Integer.parseInt( scanner.next());
-                    image = new RGBImage(width, height, max);
+                    image = new RGBImage(height, width, max);
                     for (int x = 0; x < height; x++) {
                         for (int y = 0; y < width; y++) {
                             R = Integer.parseInt( scanner.next());
@@ -62,7 +62,7 @@ public class PPMImageStacker {
         int height = images.get(0).getHeight();
         int countR = 0, countG = 0, countB = 0;
         RGBPixel pixel;
-        output = new RGBImage(width, height, output.MAX_COLORDEPTH);
+        output = new RGBImage(height, width, output.MAX_COLORDEPTH);
 
         for (int x = 0; x < height; x++) {
             for (int y = 0; y < width; y++) {

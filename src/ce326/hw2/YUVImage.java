@@ -10,7 +10,7 @@ public class YUVImage {
     int height;
     public YUVPixel[][] image;
 
-    public YUVImage(int width, int height) {
+    public YUVImage(int height, int width) {
         this.width = width;
         this.height = height;
         image = new YUVPixel[height][width];
@@ -62,7 +62,6 @@ public class YUVImage {
             }
         }
 
-
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 short y = Short.parseShort(sc.next());
@@ -89,15 +88,23 @@ public class YUVImage {
         try {
             file.createNewFile();
             FileWriter fw = new FileWriter(file);
-            fw.write(this.image.toString());
+            fw.write("YUV3\n");
+            fw.write(width + " " + height + "\n");
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    fw.write(image[i][j].toString());
+                }
+            }
+            fw.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append( width + "x  " + height + "\n");
+        sb.append( width + " " + height + "\n");
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 sb.append(image[i][j].toString());
