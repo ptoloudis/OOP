@@ -48,7 +48,7 @@ public class YUVPixel {
     }
 
     public String toString() {
-        return " " + this.Y + " " + this.U + " " + this.V;
+        return  this.Y + " " + this.U + " " + this.V;
     }
 
 

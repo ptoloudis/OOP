@@ -92,7 +92,7 @@ public class YUVImage {
             fw.write(width + " " + height + "\n");
             for (int i = 0; i < height; i++) {
                 for (int j = 0; j < width; j++) {
-                    fw.write(image[i][j].toString());
+                    fw.write(image[i][j].toString() + "\n");
                 }
             }
             fw.close();

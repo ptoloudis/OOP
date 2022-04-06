@@ -23,18 +23,18 @@ public class RGBPixel {
         int D = pixel.getU() - 128;
         int E = pixel.getV() - 128;
 
-        this.red = (byte) clip((298 * C + 409 * E + 128)>>8);
-        this.green = (byte) clip(298 * C - 100 * D - 208 * E + 128);
-        this.blue = (byte) clip(298 * C + 516 * D + 128);
+        this.red = (byte)   (clip(  (298 * C           + 409 * E + 128)>>8)-128);
+        this.green = (byte) (clip((298 * C - 100 * D - 208 * E + 128)>>8)-128);
+        this.blue = (byte)  (clip( (298 * C + 516 * D           + 128)>>8)-128);
     }
 
 
 //    Method from RGBPixel
     private short clip(int x) {
         if (x < 0)
-            return 0;
+            return (short) 0;
         else if (x > 255)
-            return 255;
+            return (short) 255;
         else
             return (short) x;
     }
@@ -64,7 +64,7 @@ public class RGBPixel {
     }
 
     public int getRGB() {
-        return (this.red << 16) | (this.green << 8) | this.blue;
+        return ((this.red + 128) << 16) | ((this.green + 128) << 8) | (this.blue + 128);
     }
 
     void setRGB(int value) {
