@@ -1,6 +1,7 @@
 package ce326.hw2;
 
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.util.List;
 import java.util.Scanner;
 
@@ -11,29 +12,36 @@ public class PPMImageStacker {
 
     // Constructor
     public PPMImageStacker(java.io.File dir) throws FileNotFoundException, UnsupportedFileFormatException {
-        if (!dir.exists()) {
+        boolean z = dir.exists();
+        if (!z) {
             throw new FileNotFoundException("[ERROR] Directory "+ dir.getName() +" does not exist!");
         }
         if (!dir.isDirectory()) {
             throw new FileNotFoundException("[ERROR] " + dir.getName() + " is not a directory!");
         }
+
+        int i;
+        Scanner scanner;
         java.io.File[] files = dir.listFiles();
-        for (int i = 0; i < files.length; i++) {
+        for ( i = 0; i < files.length; i++) {
             if (files[i].isFile()) {
-                if (files[i].getName().endsWith(".ppm")) {
-                    throw new UnsupportedFileFormatException();
+                scanner = new Scanner(files[i]);
+                if (scanner.hasNext()) {
+                    if (!scanner.next().equals("P3")) {
+                        throw new UnsupportedFileFormatException();
+                    }
                 }
+                scanner.close();
             }
         }
 
-        Scanner scanner;
         int width, height, max, R, G, B;
         RGBPixel pixel;
         RGBImage image = null;
         images = new java.util.ArrayList<RGBImage>(files.length);
         this.length = files.length;
 
-        for (int i = 0; i < files.length; i++) {
+        for (i = 0; i < files.length; i++) {
             scanner = new Scanner(files[i]);
             if (scanner.hasNext()) {
                 if (scanner.next().equals("P3")) {
@@ -52,6 +60,7 @@ public class PPMImageStacker {
                     }
                 }
             }
+            scanner.close();
             images.add(image);
         }
     }
