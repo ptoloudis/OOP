@@ -114,14 +114,16 @@ public class RGBImage implements Image {
     }
 
     public void rotateClockwise(){
-        int newHeight = width;
-        int newWidth = height;
+        int newHeight = this.width;
+        int newWidth = this.height;
         RGBPixel[][] newImage = new RGBPixel[newHeight][newWidth];
-        for (int i = 0; i < newHeight; i++) {
-            for (int j = 0; j < newWidth; j++) {
-                newImage[i][j] = image[j][newHeight - i - 1];
+        for (int k = 0; k < this.height; k++) {
+            for (int l = 0; l < this.width; l++) {
+                newImage[l][k] = image[this.height-1-k][l];
             }
         }
+        this.height = newHeight;
+        this.width = newWidth;
         this.image = newImage;
     }
 
