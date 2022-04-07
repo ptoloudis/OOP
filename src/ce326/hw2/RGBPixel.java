@@ -68,9 +68,9 @@ public class RGBPixel {
     }
 
     void setRGB(int value) {
-        this.red = (byte) ((value >> 16) & 0xFF - 128);
-        this.green = (byte) ((value >> 8) & 0xFF - 128);
-        this.blue = (byte) (value & 0xFF - 128);
+        this.blue = (byte)  ((value & 0xFF) - 128);
+        this.green = (byte) (((value >> 8) & 0xFF) - 128);
+        this.red = (byte)   (((value >> 16) & 0xFF) - 128);
     }
 
     final void setRGB(short red, short green, short blue) {

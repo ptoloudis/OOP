@@ -70,8 +70,10 @@ public class RGBImage implements Image {
     public void grayscale(){
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                int gray = (int) ((image[i][j].getRed() * 0.3 )+ (image[i][j].getGreen() * 0.59) + (image[i][j].getBlue() * 0.11));
-                this.image[i][j].setRGB(gray);
+                short gray = (short) ((image[i][j].getRed() * 0.3 )+ (image[i][j].getGreen() * 0.59) + (image[i][j].getBlue() * 0.11));
+                this.image[i][j].setRed(gray);
+                this.image[i][j].setGreen(gray);
+                this.image[i][j].setBlue(gray);
             }
         }
     }

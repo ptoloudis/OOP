@@ -5,33 +5,33 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Histogram {
-    private int[] histogram;
-    private int size;
+    private int[] histogram = new int[256];
+    private float size;
     private YUVImage image;
 
     public Histogram(YUVImage image) {
+        this.size = (float) (image.height * image.width);
         this.image = image;
-        size = image.height * image.width;
-        histogram = new int[256];
         short x;
         for (int i = 0; i < image.height; i++) {
             for (int j = 0; j < image.width; j++) {
                 x = image.image[i][j].getY();
-                histogram[x]++;
+                this.histogram[x]++;
             }
         }
     }
 
     public String toString() {
-        int thousand, hundred, ten, one;
-        StringBuffer s = new StringBuffer();
+        int thousand, hundred, ten, one, tmp;
+        StringBuilder s = new StringBuilder();
 
         for (int i = 0; i < 256; i++) {
-            s.append( String.format("\n%.3f\t(%.4f)\t", (double) i, (double) histogram[i]));
-            thousand = histogram[i] / 1000;
-            hundred = (histogram[i] % 1000) / 100;
-            ten = (histogram[i] % 100) / 10;
-            one = histogram[i] % 10;
+            s.append( String.format("\n%3d.(%4d)\t", i, histogram[i]));
+            tmp = histogram[i];
+            thousand = tmp / 1000;
+            hundred = (tmp % 1000) / 100;
+            ten = (tmp % 100) / 10;
+            one = tmp % 10;
             for (int j = 0; j < thousand; j++) {
                 s.append("#");
             }
@@ -66,16 +66,20 @@ public class Histogram {
         float pdf[] = new float[256];
         float cdf[] = new float[256];
         int x;
+        float z = 0;
 
         for (int i = 0; i < 256; i++) {
-            pdf[i] = histogram[i]/size;
+            z = (float) histogram[i];
+            pdf[i] = ( z / size);
         }
+
         cdf[0] = pdf[0];
         for (int i = 1; i < 256; i++) {
             cdf[i] = cdf[i-1] + pdf[i];
         }
+
         for (int i = 0; i < 256; i++) {
-            histogram[i]= (int) (235 *cdf[i]);
+            histogram[i]= (int) (235 * cdf[i]);
         }
 
         for (int i = 0; i < image.height; i++) {
