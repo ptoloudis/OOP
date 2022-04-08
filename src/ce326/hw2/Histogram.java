@@ -5,7 +5,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 public class Histogram {
-    private int[] histogram = new int[256];
+    private int[] histogram = new int[236];
     private float size;
     private YUVImage image;
 
@@ -25,7 +25,7 @@ public class Histogram {
         int thousand, hundred, ten, one, tmp;
         StringBuilder s = new StringBuilder();
 
-        for (int i = 0; i < 256; i++) {
+        for (int i = 0; i < 236; i++) {
             s.append( String.format("\n%3d.(%4d)\t", i, histogram[i]));
             tmp = histogram[i];
             thousand = tmp / 1000;
@@ -52,7 +52,8 @@ public class Histogram {
 
     public void toFile(File file)  {
         try (FileWriter writer = new FileWriter(file)) {
-            writer.write(toString());
+            String tmp = toString();
+            writer.write(tmp);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -63,22 +64,22 @@ public class Histogram {
     }
 
     public void equalize(){
-        float pdf[] = new float[256];
-        float cdf[] = new float[256];
+        float[] pdf = new float[236];
+        float[] cdf = new float[236];
         int x;
         float z = 0;
 
-        for (int i = 0; i < 256; i++) {
+        for (int i = 0; i < 236; i++) {
             z = (float) histogram[i];
             pdf[i] = ( z / size);
         }
 
         cdf[0] = pdf[0];
-        for (int i = 1; i < 256; i++) {
+        for (int i = 1; i < 236; i++) {
             cdf[i] = cdf[i-1] + pdf[i];
         }
 
-        for (int i = 0; i < 256; i++) {
+        for (int i = 0; i < 236; i++) {
             histogram[i]= (int) (235 * cdf[i]);
         }
 
