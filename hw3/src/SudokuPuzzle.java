@@ -110,16 +110,12 @@ public class SudokuPuzzle {
     // main method
     public static void main(String[] args) {
 
+        System.out.println("Enter the sudoku puzzle");
         Scanner sc = new Scanner(System.in);
         URLReader urlReader = new URLReader(sc.nextInt());
         int[][] b = urlReader.getTable();
 
-
-
-// creating an object of the class SudokuPuzzle
-        SudokuPuzzle obj = new SudokuPuzzle();
-
-// computing the size of the grid
+        // Printing the grid
         int size = b.length;
 
         System.out.println("The grid is: ");
@@ -127,9 +123,19 @@ public class SudokuPuzzle {
             for (int j = 0; j < size; j++) {
                 System.out.print(b[i][j] + " ");
             }
-
             System.out.println();
         }
+
+        Sudoku sg = new Sudoku(b);
+        sg.frame.pack();
+        sg.frame.setVisible(true);
+
+
+// creating an object of the class SudokuPuzzle
+        SudokuPuzzle obj = new SudokuPuzzle();
+
+// computing the size of the grid
+
         System.out.println();
         if (solveSudoku(b, 0, 0))
             print(b);
