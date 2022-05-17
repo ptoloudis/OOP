@@ -17,7 +17,7 @@ public class Network {
     int[][] board = new int[9][9];
 
     public Network(String difficulty) {
-        URL url=null;
+        URL url = null;
 
         if ( difficulty.equals("Default" )){ //For Start the Game
             for (int i = 0; i < 9; i++) {
@@ -30,9 +30,15 @@ public class Network {
 
         try {
             switch (difficulty) {
-                case "Easy" -> url = new URL(Easy);
-                case "Intermediate" -> url = new URL(Intermediate);
-                case "Expert" -> url = new URL(Expert);
+                case "Easy":
+                    url = new URL(Easy);
+                    break;
+                case "Intermediate":
+                    url = new URL(Intermediate);
+                    break;
+                case "Expert":
+                    url = new URL(Expert);
+                    break;
             }
             assert url != null;
             URLConnection urlcon = url.openConnection();
@@ -59,9 +65,15 @@ public class Network {
         }
         catch(MalformedURLException ex) {
             switch (difficulty) {
-                case "Easy" -> System.out.println("Invalid URL: " + Easy);
-                case "Intermediate" -> System.out.println("Invalid URL: " + Intermediate);
-                case "Expert" -> System.out.println("Invalid URL: " + Expert);
+                case "Easy":
+                    System.out.println("Invalid URL: " + Easy);
+                    break;
+                case "Intermediate":
+                    System.out.println("Invalid URL: " + Intermediate);
+                    break;
+                case "Expert":
+                    System.out.println("Invalid URL: " + Expert);
+                    break;
             }
             ex.printStackTrace();
         }

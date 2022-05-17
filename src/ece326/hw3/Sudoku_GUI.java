@@ -23,6 +23,10 @@ public class Sudoku_GUI extends JFrame implements Cloneable{
     private JTextField[][] cells = new JTextField[GRID_SIZE][GRID_SIZE];
     private JTextField[][] sub_cells = new JTextField[GRID_SIZE][GRID_SIZE];
 
+    private static final String Solve_icon = "src/ece326/hw3/image/rubik.png";
+    private static final String Undo_icon = "src/ece326/hw3/image/undo.png";
+    private static final String Eraser_icon = "src/ece326/hw3/image/eraser.png";
+
     private static final Color FG_CLOSE = Color.BLACK;
     private static final Color BG_CLOSE = Color.gray;
     private static final Color BG_WRONG = Color.red;
@@ -36,8 +40,6 @@ public class Sudoku_GUI extends JFrame implements Cloneable{
     private int[][] board = gen.getBoard();
 
     private boolean[][] mask = gen.getMask();
-
-    JCheckBox checkSol = new JCheckBox("Check against solution");
 
 
     class JTextFieldLimit extends PlainDocument {
@@ -60,7 +62,7 @@ public class Sudoku_GUI extends JFrame implements Cloneable{
     }
 
     // ToDo: make the Button work
-    public void actionPerformed(ActionEvent e){
+    public void actionPerformed(ActionEvent e) {
         String command =e.getActionCommand();
         int selectedRow = -1;
         int selectedCol = -1;
@@ -76,16 +78,10 @@ public class Sudoku_GUI extends JFrame implements Cloneable{
 
             }
         }
-        int value = 0;
+
+        int value = Integer.parseInt(command);
 
         try{
-            try {
-                value = Integer.parseInt(command);
-            }
-            catch (NumberFormatException z)
-            {
-                value = 0;
-            }
             cells[selectedRow][selectedCol].setBackground(BG_INPUT);
             if(board[selectedRow][selectedCol] == value) {
                 mask[selectedRow][selectedCol] = true;
@@ -485,6 +481,7 @@ public class Sudoku_GUI extends JFrame implements Cloneable{
         for(int i = 0; i < GRID_SIZE; ++i){
             for(int j = 0; j < GRID_SIZE; ++j) {
                 if (!mask[i][j]) {
+                    cells[i][j].setBackground(BG_OPEN);
                     cells[i][j].setForeground(FG_CLOSE);
                     cells[i][j].setText("" + board[i][j]);
                 }
@@ -494,10 +491,15 @@ public class Sudoku_GUI extends JFrame implements Cloneable{
         isSolved = true;
         for (int row = 0; row < GRID_SIZE; ++row) {
             for (int col = 0; col < GRID_SIZE; ++col) {
-                cells[row][col].setBackground(BG_OPEN);
                 cells[row][col].setEditable(false);
             }
         }
+    }
+
+    private ImageIcon getIcon(String path) {
+        Image img = new ImageIcon(path).getImage();
+        Image newimg = img.getScaledInstance(20, 20, java.awt.Image.SCALE_SMOOTH);
+        return new ImageIcon(newimg);
     }
 
     private void checkSolution(){
@@ -558,14 +560,19 @@ public class Sudoku_GUI extends JFrame implements Cloneable{
             }
         }
 
+        grid.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        grid.setBackground(new Color(175, 218, 34, 85));
+
         container.setPreferredSize(new Dimension(CANVAS_SIZE, CANVAS_SIZE));
 
-        JButton undoButton = new JButton("Undo");
+        JButton undoButton = new JButton(getIcon(Undo_icon));
         undoButton.setMaximumSize(new Dimension(10, 10));
-        JButton clearButton = new JButton("clear");
+        JButton clearButton = new JButton(getIcon(Eraser_icon));
         clearButton.setMaximumSize(new Dimension(10, 10));
-        JButton solveButton = new JButton("Solve");
+        JButton solveButton = new JButton(getIcon(Solve_icon));
         solveButton.setMaximumSize(new Dimension(10, 10));
+        JCheckBox checkSol = new JCheckBox("Check against solution");
+        checkSol.setBackground(new Color(12, 178, 249, 98));
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new GridLayout(3, 9));
@@ -583,6 +590,8 @@ public class Sudoku_GUI extends JFrame implements Cloneable{
         buttonPanel.add(undoButton);
         buttonPanel.add(solveButton);
         buttonPanel.add(checkSol);
+
+        buttonPanel.setBackground(new Color(12, 178, 249, 98));
 
         JMenuBar menu = buildMenu();
         setJMenuBar(menu);
