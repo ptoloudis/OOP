@@ -1,0 +1,21 @@
+ExtHashTable.cpp:50:1: error: default argument given for parameter 1 of ‘ExtHashTable::ExtHashTable(double, double, int)’ [-fpermissive]
+   50 | ExtHashTable::ExtHashTable( double upper_bound_ratio=0.5, double lower_bound_ratio=0.125, int size=8){
+      | ^~~~~~~~~~~~
+In file included from ExtHashTable.cpp:3:
+ExtHashTable.hpp:14:5: note: previous specification in ‘ExtHashTable::ExtHashTable(double, double, int)’ here
+   14 |     ExtHashTable( double upper_bound_ratio=0.5,
+      |     ^~~~~~~~~~~~
+ExtHashTable.cpp:50:1: error: default argument given for parameter 2 of ‘ExtHashTable::ExtHashTable(double, double, int)’ [-fpermissive]
+   50 | ExtHashTable::ExtHashTable( double upper_bound_ratio=0.5, double lower_bound_ratio=0.125, int size=8){
+      | ^~~~~~~~~~~~
+In file included from ExtHashTable.cpp:3:
+ExtHashTable.hpp:14:5: note: previous specification in ‘ExtHashTable::ExtHashTable(double, double, int)’ here
+   14 |     ExtHashTable( double upper_bound_ratio=0.5,
+      |     ^~~~~~~~~~~~
+ExtHashTable.cpp:50:1: error: default argument given for parameter 3 of ‘ExtHashTable::ExtHashTable(double, double, int)’ [-fpermissive]
+   50 | ExtHashTable::ExtHashTable( double upper_bound_ratio=0.5, double lower_bound_ratio=0.125, int size=8){
+      | ^~~~~~~~~~~~
+In file included from ExtHashTable.cpp:3:
+ExtHashTable.hpp:14:5: note: previous specification in ‘ExtHashTable::ExtHashTable(double, double, int)’ here
+   14 |     ExtHashTable( double upper_bound_ratio=0.5,
+      |     ^~~~~~~~~~~~
