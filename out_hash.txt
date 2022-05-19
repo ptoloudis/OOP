@@ -1,0 +1,43 @@
+In file included from HashTable.cpp:5:
+HashTable.hpp:54:9: error: ‘Iterator’ does not name a type
+   54 |         Iterator begin() const;
+      |         ^~~~~~~~
+HashTable.hpp:55:9: error: ‘Iterator’ does not name a type
+   55 |         Iterator end() const;
+      |         ^~~~~~~~
+HashTable.cpp: In member function ‘bool HashTable::contains(const string&) const’:
+HashTable.cpp:104:26: error: passing ‘const HashTable’ as ‘this’ argument discards qualifiers [-fpermissive]
+  104 |     int pos = getHashCode(str)%capacity;
+      |               ~~~~~~~~~~~^~~~~
+HashTable.cpp:11:15: note:   in call to ‘long unsigned int HashTable::getHashCode(const char*)’
+   11 | unsigned long HashTable::getHashCode(const char *str){
+      |               ^~~~~~~~~
+HashTable.cpp: At global scope:
+HashTable.cpp:213:21: error: expected unqualified-id before ‘const’
+  213 | HashTable::Iterator(const HashTable *t){
+      |                     ^~~~~
+HashTable.cpp:213:21: error: expected ‘)’ before ‘const’
+  213 | HashTable::Iterator(const HashTable *t){
+      |                    ~^~~~~
+      |                     )
+HashTable.cpp:219:21: error: expected unqualified-id before ‘const’
+  219 | HashTable::Iterator(const HashTable *t, bool start){
+      |                     ^~~~~
+HashTable.cpp:219:21: error: expected ‘)’ before ‘const’
+  219 | HashTable::Iterator(const HashTable *t, bool start){
+      |                    ~^~~~~
+      |                     )
+HashTable.cpp:231:21: error: expected unqualified-id before ‘const’
+  231 | HashTable::Iterator(const Iterator &it){
+      |                     ^~~~~
+HashTable.cpp:231:21: error: expected ‘)’ before ‘const’
+  231 | HashTable::Iterator(const Iterator &it){
+      |                    ~^~~~~
+      |                     )
+HashTable.cpp:236:11: error: non-member function ‘int pos()’ cannot have cv-qualifier
+  236 | int pos() const{
+      |           ^~~~~
+HashTable.cpp: In function ‘int pos()’:
+HashTable.cpp:237:12: error: ‘position’ was not declared in this scope
+  237 |     return position;
+      |            ^~~~~~~~

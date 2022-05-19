@@ -47,7 +47,7 @@ void ExtHashTable::rehash(){
     
 }
 
-ExtHashTable::ExtHashTable( double upper_bound_ratio=0.5, double lower_bound_ratio=0.125, int size=8){
+ExtHashTable::ExtHashTable( double upper_bound_ratio, double lower_bound_ratio, int size){
     this->size = 0;
     this->capacity = size;
     this->upper_bound_ratio = upper_bound_ratio;

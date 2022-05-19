@@ -1,25 +1,24 @@
 #include <iostream>
 #include <string>
 #include <cstring>
+#include <iterator>
 #include "HashTable.hpp"
 #include "HashTableException.hpp"
 using namespace std;
 
 #define TOMB (string *)0xFFFF; // tombstone
 
-static int HashTable::getHashCode(const char *str){
-    string s(str);
-    int hash = 0;
+unsigned long HashTable::getHashCode(const char *str){
+    unsigned long hash = 97;
+    int c;
 
-    for (size_t i = 0; i < s.length(); i++)
-    {
-        hash += s[i];
-    }
+    while((c = *(str++)) != '\0')
+        hash = ((hash << 5) + hash) + c;
 
     return hash;
 }
 
-HashTable::HashTable(int capacity=8){
+HashTable::HashTable(int capacity){
     if (capacity < 8) {
         throw bad_alloc();
     }
@@ -47,6 +46,19 @@ HashTable::HashTable(const HashTable &ht){
             *table[i] = *ht.table[i];
         }
     }
+}
+
+HashTable::~HashTable(){
+    for (int i = 0; i < capacity; i++)
+    {
+        if (!isAvailable(i))
+        {
+            delete table[i];
+        }
+        
+    }
+    
+    delete[] table;
 }
 
 int HashTable::getSize() const {
@@ -90,6 +102,7 @@ bool HashTable::contains(const string &s) const{
     char *str = new char[s.length() + 1];
     strcpy(str, s.c_str());
     int pos = getHashCode(str)%capacity;
+
     for (int i = 0; i < capacity; i++)
     {
         if (!isAvailable(pos) && *table[pos] == s) {
@@ -106,7 +119,25 @@ bool HashTable::contains(const char *s) const{
     return contains(str);
 }
 
-virtual bool HashTable::add(const string &s) {
+string HashTable::print() const{
+    string str;
+    char buf[128];
+
+    for (int i = 0; i < capacity; i++)
+    {
+        if (!isAvailable(i))
+        {
+            sprintf(buf, "%2d. -%s-\n", i, (*table[i]).c_str());
+            str.append(buf);
+        }
+    }
+    
+    sprintf(buf, " --- CAPACITY: %d, SIZE: %d ---\n", capacity, size);
+    str.append(buf);
+    return str;
+}
+
+bool HashTable::add(const string &s) {
     if (contains(s)) {
         return false;
     }
@@ -120,8 +151,6 @@ virtual bool HashTable::add(const string &s) {
     strcpy(str, s.c_str());
     int pos = getHashCode(str)%capacity;
     pos = pos % capacity;
-    int x;
-    x = pos;
 
     for (int i = 0; i < capacity; i++)
     {
@@ -142,12 +171,12 @@ virtual bool HashTable::add(const string &s) {
     return false;
 }
 
-virtual bool HashTable::add(const char *s) {
+bool HashTable::add(const char *s) {
     string str(s);
     return add(str);
 }
 
-virtual bool HashTable::remove(const string &s){
+bool HashTable::remove(const string &s){
     if (!contains(s)) {
         return false;
     }
@@ -155,8 +184,6 @@ virtual bool HashTable::remove(const string &s){
     char *str = new char[s.length() + 1];
     strcpy(str, s.c_str());
     int pos = getHashCode(str)%capacity;
-    int x;
-    x = pos;
     
     for (int i = 0; i < capacity; i++)
     {
@@ -174,9 +201,41 @@ virtual bool HashTable::remove(const string &s){
     return false;
 }
 
-virtual bool HashTable::remove(const char *s){
+bool HashTable::remove(const char *s){
     string str(s);
     return remove(str);
 }
+
+// TODO: implement the rest of the methods
+
+
+// ************* Iterator **************//
+HashTable::Iterator(const HashTable *t){
+    ht = t;
+    curr = t->table.begin();
+    position = 0;
+}
+
+HashTable::Iterator(const HashTable *t, bool start){
+    ht = t;
+    if(start){
+        curr = t->table.begin();
+        position = 0;
+    }
+    else{
+        curr = t->table.end();
+        position = t->capasity
+    }
+}
+
+HashTable::Iterator(const Iterator &it){
+    this->ht = it.ht;
+    this->curr = it.curr;
+}
+
+int pos() const{
+    return position;
+}
+
 
 // TODO: implement the rest of the methods

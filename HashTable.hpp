@@ -11,15 +11,17 @@ class HashTable {
         int size;
         int capacity;
         string **table;
-        static int getHashCode(const char *str);
+        unsigned long getHashCode(const char *str);
 
         bool isEmpty(int pos) const;
         bool isTomb(int pos) const;
         bool isAvailable(int pos) const;
   
     public:  
-        HashTable(int capacity=8);
+        HashTable(int capacity = 8);
         HashTable(const HashTable &ht);
+        ~HashTable();
+
         int getSize() const;
         int getCapacity() const;
         
@@ -48,6 +50,30 @@ class HashTable {
         HashTable &operator+=(const HashTable &t);
         
         friend std::ostream& operator<<(std::ostream &stream, HashTable &t);
+
+        Iterator begin() const;
+        Iterator end() const;
+
+        class Iterator{
+            private:
+                string *curr;
+                const HashTable *ht;
+                int position;
+            
+            public:    
+                Iterator(const HashTable *t);
+                Iterator(const HashTable *t, bool end);
+                Iterator(const Iterator &it);
+                Iterator& operator=(const Iterator &it);
+                Iterator operator++();
+                Iterator operator++(int a);
+                bool operator==(const Iterator &it) const ;
+                bool operator!=(const Iterator &it) const;
+                const string& operator*();
+                const string* operator->();
+                int pos() const;
+        };
+
 };
 
 #endif
