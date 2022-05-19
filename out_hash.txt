@@ -1,14 +1,16 @@
 In file included from HashTable.cpp:5:
-HashTable.hpp:54:9: error: ‘Iterator’ does not name a type
+HashTable.hpp:54:9: error: ‘Iterator’ does not name a type; did you mean ‘operator<<’?
    54 |         Iterator begin() const;
       |         ^~~~~~~~
-HashTable.hpp:55:9: error: ‘Iterator’ does not name a type
+      |         operator<<
+HashTable.hpp:55:9: error: ‘Iterator’ does not name a type; did you mean ‘operator<<’?
    55 |         Iterator end() const;
       |         ^~~~~~~~
+      |         operator<<
 HashTable.cpp: In member function ‘bool HashTable::contains(const string&) const’:
-HashTable.cpp:104:26: error: passing ‘const HashTable’ as ‘this’ argument discards qualifiers [-fpermissive]
+HashTable.cpp:104:30: error: passing ‘const HashTable’ as ‘this’ argument discards qualifiers [-fpermissive]
   104 |     int pos = getHashCode(str)%capacity;
-      |               ~~~~~~~~~~~^~~~~
+      |                              ^
 HashTable.cpp:11:15: note:   in call to ‘long unsigned int HashTable::getHashCode(const char*)’
    11 | unsigned long HashTable::getHashCode(const char *str){
       |               ^~~~~~~~~
