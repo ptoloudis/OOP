@@ -15,6 +15,7 @@ class ExtHashTable: public HashTable {
                     double lower_bound_ratio=0.125, 
                     int size=8);  
     ExtHashTable(const ExtHashTable &t); 
+
     bool add(const string &str);
     bool add(const char *s);
     bool remove(const string &str); 
@@ -27,10 +28,10 @@ class ExtHashTable: public HashTable {
     ExtHashTable operator-(const string &str) const;
     ExtHashTable operator-(const char *s) const;
     
-    bool operator += (const string &str);
-    bool operator += (const char* s);
-    bool operator -= (const string &str);
-    bool operator -= (const char *s);
+    ExtHashTable& operator += (const string &str);
+    ExtHashTable& operator += (const char* s);
+    ExtHashTable& operator -= (const string &str);
+    ExtHashTable& operator -= (const char *s);
     
     ExtHashTable operator+(const ExtHashTable &t) const;
     ExtHashTable &operator+=(const ExtHashTable &t);

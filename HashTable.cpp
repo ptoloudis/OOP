@@ -99,9 +99,11 @@ bool HashTable::isAvailable(int pos) const {
 }
 
 bool HashTable::contains(const string &s) const{
+    
     char *str = new char[s.length() + 1];
-    strcpy(str, s.c_str());
-    int pos = getHashCode(str)%capacity;
+    strncpy(str, s.c_str(), s.length() + 1);
+    int pos = getHashCode(str) % capacity;
+    delete [] str;
 
     for (int i = 0; i < capacity; i++)
     {
@@ -148,9 +150,9 @@ bool HashTable::add(const string &s) {
     }
 
     char *str = new char[s.length() + 1];
-    strcpy(str, s.c_str());
+    strncpy(str, s.c_str(), s.length() + 1);
     int pos = getHashCode(str)%capacity;
-    pos = pos % capacity;
+    delete [] str;
 
     for (int i = 0; i < capacity; i++)
     {
@@ -182,9 +184,11 @@ bool HashTable::remove(const string &s){
     }
     
     char *str = new char[s.length() + 1];
-    strcpy(str, s.c_str());
+    strncpy(str, s.c_str(), s.length() + 1);
     int pos = getHashCode(str)%capacity;
     
+    delete [] str;
+
     for (int i = 0; i < capacity; i++)
     {
         if (!isAvailable(pos)) {
@@ -206,36 +210,104 @@ bool HashTable::remove(const char *s){
     return remove(str);
 }
 
-// TODO: implement the rest of the methods
+HashTable& HashTable::operator = (const HashTable &ht){
+    if (this != &ht) {
+        this->~HashTable();
+        this->size = ht.size;
+        this->capacity = ht.capacity;
+        this->table = new (nothrow) string*[this->capacity];
+        if (table == NULL) {
+            throw bad_alloc();
+        }
+        for (int i = 0; i < capacity; i++) {
+            if (ht.table[i] != NULL) {
+                table[i] = new string;
+                if (table[i] == NULL) {
+                    throw bad_alloc();
+                }
+                *table[i] = *ht.table[i];
+            }
+        }
+    }
+    return *this;
+}
 
+HashTable& HashTable::operator += (const string &str){
+    add(str);
+    return *this;
+}
+
+HashTable& HashTable::operator += (const char *s){
+    add(s);
+    return *this;
+}
+
+HashTable& HashTable::operator -= (const string &str){
+    remove(str);
+    return *this;
+}
+
+HashTable& HashTable::operator -=( const char *s){
+    remove(s);
+    return *this;
+}
+
+HashTable HashTable::operator + (const string &str) const{
+    HashTable ht(*this);
+    ht += str;
+    return ht;
+}
+
+HashTable HashTable::operator + (const char *s)const{
+    HashTable ht(*this);
+    ht += s;
+    return ht;
+}
+
+HashTable HashTable::operator - (const string &str)const{
+    HashTable ht(*this);
+    ht -= str;
+    return ht;
+}
+
+HashTable HashTable::operator - (const char *s)const{
+    HashTable ht(*this);
+    ht -= s;
+    return ht;
+}
+
+std::ostream& operator<<(std::ostream &stream, HashTable &t){
+    stream << t.print();
+    return stream;
+};
 
 // ************* Iterator **************//
-HashTable::Iterator(const HashTable *t){
-    ht = t;
-    curr = t->table.begin();
-    position = 0;
-}
+// HashTable::Iterator(const HashTable *t){
+//     ht = t;
+//     curr = t->table.begin();
+//     position = 0;
+// }
 
-HashTable::Iterator(const HashTable *t, bool start){
-    ht = t;
-    if(start){
-        curr = t->table.begin();
-        position = 0;
-    }
-    else{
-        curr = t->table.end();
-        position = t->capasity
-    }
-}
+// HashTable::Iterator(const HashTable *t, bool start){
+//     ht = t;
+//     if(start){
+//         curr = t->table.begin();
+//         position = 0;
+//     }
+//     else{
+//         curr = t->table.end();
+//         position = t->capasity
+//     }
+// }
 
-HashTable::Iterator(const Iterator &it){
-    this->ht = it.ht;
-    this->curr = it.curr;
-}
+// HashTable::Iterator(const Iterator &it){
+//     this->ht = it.ht;
+//     this->curr = it.curr;
+// }
 
-int pos() const{
-    return position;
-}
+// int pos() const{
+//     return position;
+// }
 
 
 // TODO: implement the rest of the methods

@@ -44,6 +44,10 @@ void ExtHashTable::rehash(){
         table = new_table;
         capacity = new_capacity;
     }
+    else
+    {
+        return;
+    }
     
 }
 
@@ -72,11 +76,13 @@ ExtHashTable::ExtHashTable(const ExtHashTable &t){
 }
 
 bool ExtHashTable::add(const string &str){
-    if(size/capacity >= upper_bound_ratio || size/capacity <= lower_bound_ratio){
+    
+    bool success  = HashTable::add(str);
+
+    if(success){
         rehash();
     }
-
-    return HashTable::add(str);
+    return success; 
 }
 
 bool ExtHashTable::add(const char *s){
@@ -88,9 +94,7 @@ bool ExtHashTable::remove(const string &str){
     bool result = HashTable::remove(str);
     
     if(result){ 
-        if(size/capacity >= upper_bound_ratio || size/capacity <= lower_bound_ratio){
-            rehash();
-        }
+        rehash();
     }
 
     return result;
@@ -101,4 +105,84 @@ bool ExtHashTable::remove(const char *s){
     return remove(str);
 }
 
-// TODO: implement the following functions
+ExtHashTable &ExtHashTable::operator=(const ExtHashTable &t){
+    if(this != &t){
+        this->~ExtHashTable();
+        this->size = t.size;
+        this->capacity = t.capacity;
+        this->upper_bound_ratio = t.upper_bound_ratio;
+        this->lower_bound_ratio = t.lower_bound_ratio;
+        this->table = new string*[capacity];
+        for(int i=0; i<capacity; i++){
+            if(t.table[i] != NULL){
+                this->table[i] = new string(t.table[i]->c_str());
+            }
+            else{
+                this->table[i] = NULL;
+            }
+        }
+    }
+    return *this;
+}
+
+ExtHashTable ExtHashTable::operator+(const string &str) const{
+    ExtHashTable result(*this);
+    result.add(str);
+    return result;
+}
+
+ExtHashTable ExtHashTable::operator+(const char* s) const{
+    string str(s);
+    return operator+(str);
+}
+
+ExtHashTable ExtHashTable::operator-(const string &str) const{
+    ExtHashTable result(*this);
+    result.remove(str);
+    return result;
+}
+
+ExtHashTable ExtHashTable::operator-(const char* s) const{
+    string str(s);
+    return operator-(str);
+}
+
+ExtHashTable &ExtHashTable::operator+=(const string &str){
+    add(str);
+    return *this;
+}
+
+ExtHashTable &ExtHashTable::operator+=(const char* s){
+    string str(s);
+    return operator+=(str);
+}
+
+ExtHashTable &ExtHashTable::operator-=(const string &str){
+    remove(str);
+    return *this;
+}
+
+ExtHashTable &ExtHashTable::operator-=(const char* s){
+    string str(s);
+    return operator-=(str);
+}
+
+ExtHashTable ExtHashTable::operator+(const ExtHashTable &t) const{
+    ExtHashTable result(*this);
+    result += t;
+    return result;
+}
+
+ExtHashTable &ExtHashTable::operator+=(const ExtHashTable &t){
+    for(int i=0; i<t.capacity; i++){
+        if(!t.isAvailable(i)){
+            add(t.table[i]->c_str());
+        }
+        else if (t.isTomb(i) && isAvailable(i)){
+            remove(t.table[i]->c_str());
+        }
+    
+        
+    }
+    return *this;
+}

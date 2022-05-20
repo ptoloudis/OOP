@@ -11,7 +11,7 @@ class HashTable {
         int size;
         int capacity;
         string **table;
-        unsigned long getHashCode(const char *str);
+        static unsigned long getHashCode(const char *str);
 
         bool isEmpty(int pos) const;
         bool isTomb(int pos) const;
@@ -45,34 +45,31 @@ class HashTable {
         HashTable operator + (const char* s) const;
         HashTable operator - (const string &str) const;
         HashTable operator - (const char *s) const;
-
-        HashTable operator+(const HashTable &t) const;
-        HashTable &operator+=(const HashTable &t);
         
         friend std::ostream& operator<<(std::ostream &stream, HashTable &t);
 
-        Iterator begin() const;
-        Iterator end() const;
+        // Iterator begin() const;
+        // Iterator end() const;
 
-        class Iterator{
-            private:
-                string *curr;
-                const HashTable *ht;
-                int position;
+        // class Iterator{
+        //     private:
+        //         string *curr;
+        //         const HashTable *ht;
+        //         int position;
             
-            public:    
-                Iterator(const HashTable *t);
-                Iterator(const HashTable *t, bool end);
-                Iterator(const Iterator &it);
-                Iterator& operator=(const Iterator &it);
-                Iterator operator++();
-                Iterator operator++(int a);
-                bool operator==(const Iterator &it) const ;
-                bool operator!=(const Iterator &it) const;
-                const string& operator*();
-                const string* operator->();
-                int pos() const;
-        };
+        //     public:    
+        //         Iterator(const HashTable *t);
+        //         Iterator(const HashTable *t, bool end);
+        //         Iterator(const Iterator &it);
+        //         Iterator& operator=(const Iterator &it);
+        //         Iterator operator++();
+        //         Iterator operator++(int a);
+        //         bool operator==(const Iterator &it) const ;
+        //         bool operator!=(const Iterator &it) const;
+        //         const string& operator*();
+        //         const string* operator->();
+        //         int pos() const;
+        // };
 
 };
 
