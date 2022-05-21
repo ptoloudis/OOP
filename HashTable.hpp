@@ -48,28 +48,30 @@ class HashTable {
         
         friend std::ostream& operator<<(std::ostream &stream, HashTable &t);
 
-        // Iterator begin() const;
-        // Iterator end() const;
-
-        // class Iterator{
-        //     private:
-        //         string *curr;
-        //         const HashTable *ht;
-        //         int position;
+        class Iterator{
+            private:
+                string *curr;
+                const HashTable *ht;
+                int position;
             
-        //     public:    
-        //         Iterator(const HashTable *t);
-        //         Iterator(const HashTable *t, bool end);
-        //         Iterator(const Iterator &it);
-        //         Iterator& operator=(const Iterator &it);
-        //         Iterator operator++();
-        //         Iterator operator++(int a);
-        //         bool operator==(const Iterator &it) const ;
-        //         bool operator!=(const Iterator &it) const;
-        //         const string& operator*();
-        //         const string* operator->();
-        //         int pos() const;
-        // };
+            public:    
+                Iterator(const HashTable *t);
+                Iterator(const HashTable *t, bool start);
+                Iterator(const Iterator &it);
+                
+                Iterator& operator=(const Iterator &it);
+                Iterator operator++();
+                Iterator operator++(int a);
+                bool operator==(const Iterator &it) const;
+                bool operator!=(const Iterator &it) const;
+                const string& operator*();
+                const string* operator->();
+                
+                int pos() const;
+        };
+
+        Iterator begin() const;
+        Iterator end() const;
 
 };
 
