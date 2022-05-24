@@ -20,30 +20,35 @@ unsigned long HashTable::getHashCode(const char *str){
 
 HashTable::HashTable(int capacity){
     if (capacity < 8) {
+        
         throw bad_alloc();
     }
     this->size = 0;
     this->capacity = capacity;
-    this->table = new (nothrow) string*[capacity];
-    if (table == NULL) {
-        throw bad_alloc();
+    try
+    {
+        this->table = new string*[capacity];
     }
+    catch(bad_alloc& ba)
+    {
+        throw ba;
+    }   
 }
 
 HashTable::HashTable(const HashTable &ht){
     this->size = ht.size;
     this->capacity = ht.capacity;
-    this->table = new (nothrow) string*[this->capacity];
-    if (table == NULL) {
-        throw bad_alloc();
+    try
+    {
+        this->table = new string*[capacity];
+    }
+    catch(bad_alloc& ba)
+    {
+        throw ba;
     }
     for (int i = 0; i < capacity; i++) {
         if (ht.table[i] != NULL) {
-            table[i] = new string;
-            if (table[i] == NULL) {
-                throw bad_alloc();
-            }
-            *table[i] = *ht.table[i];
+            this->table[i] = new string(*(ht.table[i]));
         }
     }
 }
@@ -215,10 +220,17 @@ HashTable& HashTable::operator = (const HashTable &ht){
         this->~HashTable();
         this->size = ht.size;
         this->capacity = ht.capacity;
-        this->table = new (nothrow) string*[this->capacity];
-        if (table == NULL) {
-            throw bad_alloc();
+        
+        try
+        {
+            string **new_table = new string*[capacity];
+            this->table = new_table;
         }
+        catch(bad_alloc& ba)
+        {
+            throw ba;
+        }
+        
         for (int i = 0; i < capacity; i++) {
             if (ht.table[i] != NULL) {
                 table[i] = new string;
@@ -281,68 +293,9 @@ std::ostream& operator<<(std::ostream &stream, HashTable &t){
     return stream;
 };
 
-// ************* Iterator **************//
-HashTable::Iterator::Iterator(const HashTable *t){
-    ht = t;
-    curr = t->table[0];
-    position = 0;
+Iterator begin() const{
+
 }
-
-HashTable::Iterator::Iterator(const HashTable *t, bool start){
-    ht = t;
-    if(start){
-        curr = t->table[0];
-        position = 0;
-    }
-    else{
-        curr = t->table[t->capacity - 1];
-        position = t->capacity - 1;
-    }
-}
-
-HashTable::Iterator::Iterator(const Iterator &it){
-    this->ht = it.ht;
-    this->curr = it.curr;
-    this->position = it.position;
-}
-
-HashTable::Iterator& HashTable::Iterator::operator = (const Iterator &it){
-    this->ht = it.ht;
-    this->curr = it.curr;
-    this->position = it.position;
-    return *this;
-}
-
-HashTable::Iterator HashTable::Iterator::operator ++(){
-    curr = ht->table[position + 1];
-    position++;
-    return *this;
-}
-
-HashTable::Iterator HashTable::Iterator::operator ++(int){
-    Iterator it(*this);
-    curr = ht->table[position + 1];
-    position++;
-    return it;
-}
-
-bool HashTable::Iterator::operator == (const Iterator &it) const{
-    return (ht == it.ht && position == it.position && curr == it.curr);
-}
-
-bool HashTable::Iterator::operator != (const Iterator &it) const{
-    return !HashTable::Iterator::operator == (it);
-}
-
-const string& HashTable::Iterator::operator*(){
-    return *curr;
-}
-
-const string* HashTable::Iterator::operator->(){
-    return curr;
-}
-
-
-int HashTable::Iterator::pos() const{
-    return position;
+Iterator end() const{
+    
 }

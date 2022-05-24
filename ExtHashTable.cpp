@@ -7,7 +7,15 @@ void ExtHashTable::rehash(){
     if (size/capacity >= upper_bound_ratio)
     {
         int new_capacity = 2*capacity;
-        string **new_table = new string*[new_capacity];
+        try
+        {
+            string **new_table = new string*[new_capacity];
+        }
+        catch(bad_alloc& ba)
+        {
+            throw ba;
+        }  
+        
         for (int i = 0; i < capacity; i++)
         {
             if (!isEmpty(i))
@@ -27,7 +35,15 @@ void ExtHashTable::rehash(){
     else if (size/capacity <= lower_bound_ratio)
     {
         int new_capacity = capacity/2;
-        string **new_table = new string*[new_capacity];
+        try
+        {
+            string **new_table = new string*[new_capacity];
+        }
+        catch(bad_alloc& ba)
+        {
+            throw ba;
+        }
+        
         for (int i = 0; i < capacity; i++)
         {
             if (!isEmpty(i))
@@ -56,7 +72,15 @@ ExtHashTable::ExtHashTable( double upper_bound_ratio, double lower_bound_ratio, 
     this->capacity = size;
     this->upper_bound_ratio = upper_bound_ratio;
     this->lower_bound_ratio = lower_bound_ratio;
-    this->table = new string*[capacity];
+    
+    try
+    {
+        string **new_table = new string*[capacity];
+    }
+    catch(bad_alloc& ba)
+    {
+        throw ba;
+    }
 }
 
 ExtHashTable::ExtHashTable(const ExtHashTable &t){
@@ -64,7 +88,16 @@ ExtHashTable::ExtHashTable(const ExtHashTable &t){
     this->capacity = t.capacity;
     this->upper_bound_ratio = t.upper_bound_ratio;
     this->lower_bound_ratio = t.lower_bound_ratio;
-    this->table = new string*[capacity];
+    
+    try
+    {
+        string **new_table = new string*[capacity];
+    }
+    catch(bad_alloc& ba)
+    {
+        throw ba;
+    }
+    
     for(int i=0; i<capacity; i++){
         if(t.table[i] != NULL){
             this->table[i] = new string(t.table[i]->c_str());
@@ -112,7 +145,16 @@ ExtHashTable &ExtHashTable::operator=(const ExtHashTable &t){
         this->capacity = t.capacity;
         this->upper_bound_ratio = t.upper_bound_ratio;
         this->lower_bound_ratio = t.lower_bound_ratio;
-        this->table = new string*[capacity];
+        
+        try
+        {
+            string **new_table = new string*[capacity];
+        }
+        catch(bad_alloc& ba)
+        {
+            throw ba;
+        }
+        
         for(int i=0; i<capacity; i++){
             if(t.table[i] != NULL){
                 this->table[i] = new string(t.table[i]->c_str());
