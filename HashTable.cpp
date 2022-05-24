@@ -293,9 +293,9 @@ std::ostream& operator<<(std::ostream &stream, HashTable &t){
     return stream;
 };
 
-Iterator begin() const{
-
+HashTable::Iterator HashTable::begin() const{
+    return HashTable::Iterator(this, true);
 }
-Iterator end() const{
-    
+HashTable::Iterator HashTable::end() const{
+    return HashTable::Iterator(this, false);
 }
