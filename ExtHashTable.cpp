@@ -4,12 +4,15 @@
 using namespace std;
 
 void ExtHashTable::rehash(){
+    string **new_table;
+
     if (size/capacity >= upper_bound_ratio)
     {
+        
         int new_capacity = 2*capacity;
         try
         {
-            string **new_table = new string*[new_capacity];
+            new_table = new string*[new_capacity];
         }
         catch(bad_alloc& ba)
         {
@@ -37,7 +40,7 @@ void ExtHashTable::rehash(){
         int new_capacity = capacity/2;
         try
         {
-            string **new_table = new string*[new_capacity];
+            new_table = new string*[new_capacity];
         }
         catch(bad_alloc& ba)
         {
@@ -73,9 +76,11 @@ ExtHashTable::ExtHashTable( double upper_bound_ratio, double lower_bound_ratio, 
     this->upper_bound_ratio = upper_bound_ratio;
     this->lower_bound_ratio = lower_bound_ratio;
     
+    string **new_table = nullptr;
+
     try
     {
-        string **new_table = new string*[capacity];
+        new_table = new string*[capacity];
     }
     catch(bad_alloc& ba)
     {
@@ -89,9 +94,11 @@ ExtHashTable::ExtHashTable(const ExtHashTable &t){
     this->upper_bound_ratio = t.upper_bound_ratio;
     this->lower_bound_ratio = t.lower_bound_ratio;
     
+    string **new_table = nullptr;
+
     try
     {
-        string **new_table = new string*[capacity];
+        new_table = new string*[capacity];
     }
     catch(bad_alloc& ba)
     {

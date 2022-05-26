@@ -28,6 +28,11 @@ HashTable::HashTable(int capacity){
     try
     {
         this->table = new string*[capacity];
+        for (int i = 0; i < capacity; i++)
+        {
+            this->table[i] = NULL;
+        }
+        
     }
     catch(bad_alloc& ba)
     {
@@ -41,6 +46,10 @@ HashTable::HashTable(const HashTable &ht){
     try
     {
         this->table = new string*[capacity];
+        for (int i = 0; i < capacity; i++)
+        {
+            this->table[i] = NULL;
+        }
     }
     catch(bad_alloc& ba)
     {
@@ -54,13 +63,12 @@ HashTable::HashTable(const HashTable &ht){
 }
 
 HashTable::~HashTable(){
-    for (int i = 0; i < capacity; i++)
-    {
-        if (!isAvailable(i))
-        {
-            delete table[i];
+    if (size > 0) {
+        for (int i = 0; i < capacity; i++) {
+            if (table[i] != NULL) {
+                delete table[i];
+            }
         }
-        
     }
     
     delete[] table;
@@ -104,7 +112,10 @@ bool HashTable::isAvailable(int pos) const {
 }
 
 bool HashTable::contains(const string &s) const{
-    
+    if (size == 0) {
+        return false;
+    }
+
     char *str = new char[s.length() + 1];
     strncpy(str, s.c_str(), s.length() + 1);
     int pos = getHashCode(str) % capacity;
@@ -150,7 +161,9 @@ bool HashTable::add(const string &s) {
     }
     
     if (size >= capacity) {
+        
         HashTableException e;
+        cerr << "HashTable is full!" << endl;
         throw e.what();
     }
 
@@ -161,13 +174,16 @@ bool HashTable::add(const string &s) {
 
     for (int i = 0; i < capacity; i++)
     {
-        
         if (isAvailable(pos)) {
-            table[pos] = new string;
-            if (table[pos] == NULL) {
-                throw bad_alloc();
+            try
+            {
+                table[pos] = new string(s);
             }
-            *table[pos] = s;
+            catch(bad_alloc& ba)
+            {
+                throw ba;
+            }
+            
             size++;
             return true;
         }
@@ -296,6 +312,7 @@ std::ostream& operator<<(std::ostream &stream, HashTable &t){
 HashTable::Iterator HashTable::begin() const{
     return HashTable::Iterator(this, true);
 }
+
 HashTable::Iterator HashTable::end() const{
     return HashTable::Iterator(this, false);
 }

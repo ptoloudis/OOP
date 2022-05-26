@@ -34,15 +34,8 @@ HashTable::Iterator::Iterator(const HashTable *t, bool start){
     }
     else
     {
-        for (int i = ht->capacity - 1; i >= 0; i--)
-        {
-            if(!ht->isAvailable(i))
-            {
-                this->position = i;
-                this->curr = ht->table[i];
-                break;
-            }
-        }
+        this->position = ht->capacity;
+        this->curr = NULL;
     }
 }
 
