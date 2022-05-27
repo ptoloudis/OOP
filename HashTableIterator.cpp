@@ -40,15 +40,15 @@ HashTable::Iterator::Iterator(const HashTable *t, bool start){
 }
 
 HashTable::Iterator::Iterator(const Iterator &it){
-    this->ht = it.ht;
-    this->position = it.position;
-    this->curr = it.curr;
+    ht = it.ht;
+    position = it.position;
+    curr = it.curr;
 }
 
 HashTable::Iterator& HashTable::Iterator::operator=(const Iterator &it){
-    this->ht = it.ht;
-    this->position = it.position;
-    this->curr = it.curr;
+    ht = it.ht;
+    position = it.position;
+    curr = it.curr;
     return *this;
 }
 
@@ -57,7 +57,7 @@ HashTable::Iterator HashTable::Iterator::operator++(){
     {
         return *this;
     }
-    for (int i = position; i < ht->capacity; i++)
+    for (int i = position+1; i < ht->capacity; i++)
     {
         if (!ht->isAvailable(i)) {
             position = i;
@@ -65,16 +65,30 @@ HashTable::Iterator HashTable::Iterator::operator++(){
             return *this;
         }
     }
-    
     position = ht->capacity;
-    curr = ht->table[position];
+    curr = NULL;
     return *this;
 }
 
 HashTable::Iterator HashTable::Iterator::operator++(int){
-    Iterator it(*this);
-    ++(*this);
-    return it;
+    Iterator temp(*this);
+
+    if(position == ht->capacity)
+    {
+        return temp;
+    }
+    for (int i = position+1; i < ht->capacity; i++)
+    {
+        if (!ht->isAvailable(i)) {
+            position = i;
+            curr = ht->table[i];
+            return temp;
+        }
+    }
+    position = ht->capacity;
+    curr = NULL;
+    return temp;
+     
 }
 
 bool HashTable::Iterator::operator==(const Iterator &it) const{
