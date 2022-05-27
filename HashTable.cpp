@@ -65,7 +65,8 @@ HashTable::HashTable(const HashTable &ht){
 HashTable::~HashTable(){
     if (size > 0) {
         for (int i = 0; i < capacity; i++) {
-            if (table[i] != NULL) {
+            if (!isAvailable(i)) {
+
                 delete table[i];
             }
         }
@@ -160,11 +161,10 @@ bool HashTable::add(const string &s) {
         return false;
     }
     
-    if (size >= capacity) {
+    if (size > capacity) {
         
         HashTableException e;
-        cerr << "HashTable is full!" << endl;
-        throw e.what();
+        throw e;
     }
 
     char *str = new char[s.length() + 1];
@@ -233,14 +233,19 @@ bool HashTable::remove(const char *s){
 
 HashTable& HashTable::operator = (const HashTable &ht){
     if (this != &ht) {
-        this->~HashTable();
+        for (int i = 0; i < capacity; i++) {
+            if (table[i] != NULL) {
+                delete table[i];
+            }
+        }
+        delete[] table;
+
         this->size = ht.size;
         this->capacity = ht.capacity;
         
         try
         {
-            string **new_table = new string*[capacity];
-            this->table = new_table;
+            this->table = new string*[capacity];
         }
         catch(bad_alloc& ba)
         {
@@ -248,14 +253,25 @@ HashTable& HashTable::operator = (const HashTable &ht){
         }
         
         for (int i = 0; i < capacity; i++) {
-            if (ht.table[i] != NULL) {
-                table[i] = new string;
-                if (table[i] == NULL) {
-                    throw bad_alloc();
+            if (!ht.isAvailable(i)) {
+                try
+                {                    
+                    this->table[i] = new string(*(ht.table[i]));
                 }
-                *table[i] = *ht.table[i];
+                catch(bad_alloc& ba)
+                {
+                    throw ba;
+                }
             }
+            else if (ht.isTomb(i)) {
+                this->table[i] = TOMB;
+            }
+            else {
+                this->table[i] = NULL;
+            }           
+            
         }
+        
     }
     return *this;
 }

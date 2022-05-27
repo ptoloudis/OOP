@@ -2,27 +2,27 @@
 
 t1:  Ελέγχει την εισαγωγή μη αποδεκτής τιμής στον κατασκευαστή HashTable(int) OK
 
-t2:  Ελέγχει τη μέθοδο HashTable::add
+t2:  Ελέγχει τη μέθοδο HashTable::add OK
 
-t3:  Ελέγχει τη μέθοδο HashTable::remove. 
+t3:  Ελέγχει τη μέθοδο HashTable::remove. OK
      Προϋπoθέσεις: HashTable::add(string &)
      
-t4:  Ελέγχει τον copy constructor.
+t4:  Ελέγχει τον copy constructor. OK
      Προϋπoθέσεις: HashTable::add(string &)
      
-t5:  Ελέγχει τον τελεστή HashTable::operator=(HashTable &t)
+t5:  Ελέγχει τον τελεστή HashTable::operator=(HashTable &t) OK
      Προϋπoθέσεις: HashTable::add(string &)
      
-t6:  Ελέγχει τον τελεστή HashTable::operator+=(string&)
+t6:  Ελέγχει τον τελεστή HashTable::operator+=(string&) OK
      Προϋπoθέσεις: HashTable::operator= 
      
-t7:  Ελέγχει τον τελεστή HashTable::operator-=(string&). 
+t7:  Ελέγχει τον τελεστή HashTable::operator-=(string&). OK
      Προϋπoθέσεις: HashTable::add(string &), HashTable::operator= 
      
-t8:  Ελέγχει τον τελεστή HashTable::operator+(string&)
+t8:  Ελέγχει τον τελεστή HashTable::operator+(string&) OK
      Προϋπoθέσεις: HashTable::operator= 
      
-t9:  Ελέγχει τον τελεστή HashTable::operator-(string&)
+t9:  Ελέγχει τον τελεστή HashTable::operator-(string&) OK
      Προϋπoθέσεις: HashTable::operator+(string&)
      
 t10: Ελέγχει τον τελεστή HashTable::operator+(HashTable&)

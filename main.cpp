@@ -9,41 +9,34 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-  if(argc<3) {
-    cout << "Insufficient number of arguments!\n";
-    cout << "Usage: ./t2 <table_size> <input_txt_file>\n" << endl;
-    return -1;
-  }
     
   try {
-    int table_size = atoi(argv[1]);
-  
-    ifstream in_stream (argv[2]);
-    if (!in_stream.is_open()) {
-      cout << "Unable to open file " << argv[2];
-      return -1;    
-    }
     
-    HashTable table(table_size);
+    HashTable  table2(12), table3(12);
     
-    while ( !in_stream.eof() ) {
+    table2.add("coffee");
+    table2.add("sugar");
+    table2.add("orangejuice");
+    table2.add("tea");
+    table2.add("lemonade");
+    table2.add("water");
+    table2.add("milk");
+    table2.add("salt");
+    table2.add("butter");
+    
+    cout << " ###### HASH TABLE 2 ######" << endl;
+    cout << table2.print() << endl;
+    
+    table3 = table2 - "sugar";
 
-      string word;
-      in_stream >> word;
-      if(table.add(word)) 
-        cout << "'" << word << "' added!" << endl;
-      else
-        cout << "'" << word << "' failed!" << endl;
-      cout << table.print() << endl;
-    }
+    cout << " ###### HASH TABLE 2 after assignment ######" << endl;
+    cout << table3.print() << endl;
     
-    in_stream.close();
+    cout << " ######### FINISHED #########" << endl;
   
-  } catch(std::bad_alloc &ex) {
+  } catch(std::bad_alloc& ex) {
     cout << "std::bad_alloc occured!\n";
-  } catch(HashTableException &ex) {
+  } catch(HashTableException& ex) {
     cout << "HashTableException occured!\n";
-  } 
-
-   
+  }
 }

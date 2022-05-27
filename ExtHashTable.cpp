@@ -81,6 +81,7 @@ ExtHashTable::ExtHashTable( double upper_bound_ratio, double lower_bound_ratio, 
     try
     {
         new_table = new string*[capacity];
+        this->table = new_table;
     }
     catch(bad_alloc& ba)
     {
@@ -99,6 +100,7 @@ ExtHashTable::ExtHashTable(const ExtHashTable &t){
     try
     {
         new_table = new string*[capacity];
+        this->table = new_table;
     }
     catch(bad_alloc& ba)
     {
@@ -153,9 +155,12 @@ ExtHashTable &ExtHashTable::operator=(const ExtHashTable &t){
         this->upper_bound_ratio = t.upper_bound_ratio;
         this->lower_bound_ratio = t.lower_bound_ratio;
         
+        string **new_table = nullptr;
+
         try
         {
-            string **new_table = new string*[capacity];
+            new_table = new string*[capacity];
+            this->table = new_table;
         }
         catch(bad_alloc& ba)
         {
