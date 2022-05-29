@@ -56,9 +56,14 @@ HashTable::HashTable(const HashTable &ht){
         throw ba;
     }
     for (int i = 0; i < capacity; i++) {
-        if (ht.table[i] != NULL) {
+        if (!ht.isAvailable(i)) {
             this->table[i] = new string(*(ht.table[i]));
         }
+        if (ht.isTomb(i)) {
+            this->table[i] = TOMB;
+        }
+
+        
     }
 }
 
@@ -87,7 +92,10 @@ bool HashTable::isEmpty(int pos) const {
     if (pos >= capacity) {
         return false;
     }
-    return table[pos] == NULL;
+    if (table[pos] == NULL) {
+        return true;
+    }
+    return false;
 }
 
 bool HashTable::isTomb(int pos) const {
@@ -234,7 +242,7 @@ bool HashTable::remove(const char *s){
 HashTable& HashTable::operator = (const HashTable &ht){
     if (this != &ht) {
         for (int i = 0; i < capacity; i++) {
-            if (table[i] != NULL) {
+            if (!isAvailable(i)) {
                 delete table[i];
             }
         }
@@ -302,19 +310,19 @@ HashTable HashTable::operator + (const string &str) const{
     return ht;
 }
 
-HashTable HashTable::operator + (const char *s)const{
+HashTable HashTable::operator + (const char *s) const{
     HashTable ht(*this);
     ht += s;
     return ht;
 }
 
-HashTable HashTable::operator - (const string &str)const{
+HashTable HashTable::operator - (const string &str) const{
     HashTable ht(*this);
     ht -= str;
     return ht;
 }
 
-HashTable HashTable::operator - (const char *s)const{
+HashTable HashTable::operator - (const char *s) const{
     HashTable ht(*this);
     ht -= s;
     return ht;

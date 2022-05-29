@@ -5,14 +5,19 @@ using namespace std;
 
 void ExtHashTable::rehash(){
     string **new_table;
+    double ratio = (double)this->size / (double)this->capacity;
 
-    if (size/capacity >= upper_bound_ratio)
+    if (ratio > upper_bound_ratio)
     {
         
         int new_capacity = 2*capacity;
         try
         {
             new_table = new string*[new_capacity];
+            for (int i = 0; i < new_capacity; i++)
+            {
+                new_table[i] = NULL;
+            }
         }
         catch(bad_alloc& ba)
         {
@@ -21,9 +26,9 @@ void ExtHashTable::rehash(){
         
         for (int i = 0; i < capacity; i++)
         {
-            if (!isEmpty(i))
+            if (!isAvailable(i))
             {
-                int new_pos = getHashCode(table[i]->c_str());
+                int new_pos = getHashCode(table[i]->c_str()) % new_capacity;
                 while (new_table[new_pos] != NULL)
                 {
                     new_pos = (new_pos + 1) % new_capacity;
@@ -35,12 +40,16 @@ void ExtHashTable::rehash(){
         table = new_table;
         capacity = new_capacity;
     }
-    else if (size/capacity <= lower_bound_ratio)
+    else if (ratio < lower_bound_ratio)
     {
         int new_capacity = capacity/2;
         try
         {
             new_table = new string*[new_capacity];
+            for (int i = 0; i < new_capacity; i++)
+            {
+                new_table[i] = NULL;
+            }
         }
         catch(bad_alloc& ba)
         {
@@ -49,9 +58,9 @@ void ExtHashTable::rehash(){
         
         for (int i = 0; i < capacity; i++)
         {
-            if (!isEmpty(i))
+            if (!isAvailable(i))
             {
-                int new_pos = getHashCode(table[i]->c_str());
+                int new_pos = getHashCode(table[i]->c_str()) % new_capacity;
                 while (new_table[new_pos] != NULL)
                 {
                     new_pos = (new_pos + 1) % new_capacity;
@@ -70,51 +79,15 @@ void ExtHashTable::rehash(){
     
 }
 
-ExtHashTable::ExtHashTable( double upper_bound_ratio, double lower_bound_ratio, int size){
-    this->size = 0;
-    this->capacity = size;
+ExtHashTable::ExtHashTable( double upper_bound_ratio, double lower_bound_ratio, int size) : HashTable(size){
     this->upper_bound_ratio = upper_bound_ratio;
     this->lower_bound_ratio = lower_bound_ratio;
-    
-    string **new_table = nullptr;
-
-    try
-    {
-        new_table = new string*[capacity];
-        this->table = new_table;
-    }
-    catch(bad_alloc& ba)
-    {
-        throw ba;
-    }
 }
 
-ExtHashTable::ExtHashTable(const ExtHashTable &t){
-    this->size = t.size;
-    this->capacity = t.capacity;
+ExtHashTable::ExtHashTable(const ExtHashTable &t): HashTable(t){
     this->upper_bound_ratio = t.upper_bound_ratio;
     this->lower_bound_ratio = t.lower_bound_ratio;
     
-    string **new_table = nullptr;
-
-    try
-    {
-        new_table = new string*[capacity];
-        this->table = new_table;
-    }
-    catch(bad_alloc& ba)
-    {
-        throw ba;
-    }
-    
-    for(int i=0; i<capacity; i++){
-        if(t.table[i] != NULL){
-            this->table[i] = new string(t.table[i]->c_str());
-        }
-        else{
-            this->table[i] = NULL;
-        }
-    }
 }
 
 bool ExtHashTable::add(const string &str){
@@ -207,8 +180,8 @@ ExtHashTable &ExtHashTable::operator+=(const string &str){
 }
 
 ExtHashTable &ExtHashTable::operator+=(const char* s){
-    string str(s);
-    return operator+=(str);
+    add(s);
+    return *this;
 }
 
 ExtHashTable &ExtHashTable::operator-=(const string &str){
@@ -232,11 +205,6 @@ ExtHashTable &ExtHashTable::operator+=(const ExtHashTable &t){
         if(!t.isAvailable(i)){
             add(t.table[i]->c_str());
         }
-        else if (t.isTomb(i) && isAvailable(i)){
-            remove(t.table[i]->c_str());
-        }
-    
-        
     }
     return *this;
 }

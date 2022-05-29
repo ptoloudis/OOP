@@ -9,12 +9,9 @@
 using namespace std;
 
 int main(int argc, char *argv[]) {
-  string str; 
-  char buf[128];
-  
   if(argc<5) {
     cout << "Insufficient number of arguments!\n";
-    cout << "Usage: ./t13 <table_size> <input_txt_file1> <input_txt_file2> <input_txt_file3>\n" << endl;
+    cout << "Usage: ./t10 <table_size> <input_txt_file1> <input_txt_file2> <input_txt_file3>\n" << endl;
     return -1;
   }
     
@@ -36,12 +33,16 @@ int main(int argc, char *argv[]) {
     }
     in_stream.close();
     
+    cout << " ###### HASH TABLE ######" << endl;
+    cout << table.print() << endl;    
+    
     in_stream.open(argv[3]);
     if (!in_stream.is_open()) {
       cout << "Unable to open file " << argv[3];
       return -1;    
     }
     
+    cout << " ###### Removing words ######" << endl;
     while ( !in_stream.eof() ) {
       string word;
       in_stream >> word;
@@ -49,12 +50,16 @@ int main(int argc, char *argv[]) {
     }
     in_stream.close();
     
+    cout << " ###### HASH TABLE ######" << endl;
+    cout << table.print() << endl;    
+    
     in_stream.open(argv[4]);
     if (!in_stream.is_open()) {
       cout << "Unable to open file " << argv[4];
       return -1;    
     }
     
+    cout << " ###### Adding words ######" << endl;
     while ( !in_stream.eof() ) {
       string word;
       in_stream >> word;
@@ -63,24 +68,8 @@ int main(int argc, char *argv[]) {
     in_stream.close();
     
     cout << " ###### HASH TABLE ######" << endl;
-    for(HashTable::Iterator it = table.begin(); it!=table.end(); ) {
-      sprintf(buf, "%2d. -%s-\n", it.pos(), (*(it++)).c_str());
-      str.append(buf);
-    }
-    sprintf(buf, " --- CAPACITY: %d, SIZE: %d ---\n", table.getCapacity(), table.getSize());
-    str.append(buf);
-    cout << str;
-    
-    str.clear();
-    cout << " ###### HASH TABLE ######" << endl;
-    for(HashTable::Iterator it = table.begin(); it!=table.end(); ++it) {
-      sprintf(buf, "%2d. -%s-\n", it.pos(), (*it).c_str());
-      str.append(buf);
-    }
-    sprintf(buf, " --- CAPACITY: %d, SIZE: %d ---\n", table.getCapacity(), table.getSize());
-    str.append(buf);
-    cout << str;
-    
+    cout << table.print() << endl;
+  
   } catch(std::bad_alloc& ex) {
     cout << "std::bad_alloc occured!\n";
   } catch(HashTableException& ex) {

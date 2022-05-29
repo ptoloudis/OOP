@@ -13,9 +13,13 @@ HashTable::Iterator::Iterator(const HashTable *t){
         {
             this->position = i;
             this->curr = ht->table[i];
-            break;
+            return;
         }
     }
+    this->position = ht->capacity;
+    this->curr = NULL;
+    return;
+
 }
 
 HashTable::Iterator::Iterator(const HashTable *t, bool start){
@@ -28,9 +32,12 @@ HashTable::Iterator::Iterator(const HashTable *t, bool start){
             {
                 this->position = i;
                 this->curr = ht->table[i];
-                break;
+                return;
             }
         }
+        this->position = ht->capacity;
+        this->curr = NULL;
+        return;
     }
     else
     {
@@ -77,6 +84,14 @@ HashTable::Iterator HashTable::Iterator::operator++(int){
     {
         return temp;
     }
+
+    if (ht->size == 0)
+    {
+        position += 1;
+        curr = NULL;
+        return temp;
+    }
+
     for (int i = position+1; i < ht->capacity; i++)
     {
         if (!ht->isAvailable(i)) {
@@ -85,6 +100,7 @@ HashTable::Iterator HashTable::Iterator::operator++(int){
             return temp;
         }
     }
+
     position = ht->capacity;
     curr = NULL;
     return temp;

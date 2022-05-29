@@ -2,7 +2,7 @@
 #include <fstream>
 #include <string>
 
-#include "HashTable.hpp"
+#include "ExtHashTable.hpp"
 #include "HashTableException.hpp"
 #include <stdlib.h>
 
@@ -12,22 +12,21 @@ int main(int argc, char *argv[]) {
   string str; 
   char buf[128];
   
-  if(argc<5) {
+  if(argc<4) {
     cout << "Insufficient number of arguments!\n";
-    cout << "Usage: ./t13 <table_size> <input_txt_file1> <input_txt_file2> <input_txt_file3>\n" << endl;
+    cout << "Usage: ./t13 <input_txt_file1> <input_txt_file2> <input_txt_file3>\n" << endl;
     return -1;
   }
     
   try {
-    int table_size = atoi(argv[1]);
   
-    ifstream in_stream (argv[2]);
+    ifstream in_stream (argv[1]);
     if (!in_stream.is_open()) {
-      cout << "Unable to open file " << argv[2];
+      cout << "Unable to open file " << argv[1];
       return -1;    
     }
     
-    HashTable table(table_size);
+    ExtHashTable table;
     
     while ( !in_stream.eof() ) {
       string word;
@@ -36,9 +35,9 @@ int main(int argc, char *argv[]) {
     }
     in_stream.close();
     
-    in_stream.open(argv[3]);
+    in_stream.open(argv[2]);
     if (!in_stream.is_open()) {
-      cout << "Unable to open file " << argv[3];
+      cout << "Unable to open file " << argv[2];
       return -1;    
     }
     
@@ -49,9 +48,9 @@ int main(int argc, char *argv[]) {
     }
     in_stream.close();
     
-    in_stream.open(argv[4]);
+    in_stream.open(argv[3]);
     if (!in_stream.is_open()) {
-      cout << "Unable to open file " << argv[4];
+      cout << "Unable to open file " << argv[3];
       return -1;    
     }
     
