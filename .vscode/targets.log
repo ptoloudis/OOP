@@ -1,6 +1,4 @@
 make all --print-data-base --no-builtin-variables --no-builtin-rules --question
-make: *** No rule to make target 'all'.  Stop.
-
 # GNU Make 4.3
 # Built for x86_64-pc-linux-gnu
 # Copyright (C) 1988-2020 Free Software Foundation, Inc.
@@ -8,7 +6,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sun May 29 20:34:41 2022
+# Make data base, printed on Mon May 30 12:05:51 2022
 
 # Variables
 
@@ -27,7 +25,7 @@ SNAP_INSTANCE_KEY =
 # environment
 GJS_DEBUG_OUTPUT = stderr
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-a7246599-cde8-4fcf-af74-25ccd18507fa.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-e582a3ca-e655-4a24-8eb6-40d349db322e.sock
 # environment
 LC_NAME = el_GR.UTF-8
 # environment
@@ -67,7 +65,7 @@ VSCODE_CODE_CACHE_PATH = /home/sabrina/.config/Code/CachedData/c3511e6c69bb39013
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.YNW0M1
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.RWZSM1
 # default
 .LOADED := 
 # default
@@ -107,7 +105,7 @@ SNAP_REEXEC =
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 18561
+VSCODE_PID = 12789
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
@@ -115,7 +113,7 @@ XDG_SESSION_TYPE = wayland
 # environment
 BAMF_DESKTOP_FILE_HINT = /var/lib/snapd/desktop/applications/code_code.desktop
 # environment
-SESSION_MANAGER = local/ptbox:@/tmp/.ICE-unix/2032,unix/ptbox:/tmp/.ICE-unix/2032
+SESSION_MANAGER = local/ptbox:@/tmp/.ICE-unix/2057,unix/ptbox:/tmp/.ICE-unix/2057
 # automatic
 *F = $(notdir $*)
 # environment
@@ -163,7 +161,7 @@ LC_TIME = el_GR.UTF-8
 # environment
 SNAP = /snap/code/97
 # environment
-INVOCATION_ID = ed797c4d558642afbef821941208c0bb
+INVOCATION_ID = 8b7b5763f1bd4df2a5ef7d5b2ba3c9ef
 # environment
 SNAP_REVISION = 97
 # environment
@@ -201,7 +199,7 @@ SNAP_ARCH = amd64
 # makefile
 .DEFAULT_GOAL := libHashTable
 # environment
-SYSTEMD_EXEC_PID = 2073
+SYSTEMD_EXEC_PID = 2098
 # environment
 DISPLAY = :0
 # environment
@@ -217,11 +215,11 @@ SNAP_DATA = /var/snap/code/97
 # environment
 SNAP_CONTEXT = O2xxwneNRDW4Qhtr8PnO0SGyBZMkrDDh44hGnJ4FnN5-HvasB26v
 # environment
-MANAGERPID = 1898
+MANAGERPID = 1922
 # environment
 LC_MEASUREMENT = el_GR.UTF-8
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 18516
+GIO_LAUNCHED_DESKTOP_FILE_PID = 12740
 # environment
 _ = /snap/code/97/usr/share/code/code
 # environment
@@ -233,7 +231,7 @@ CFLAGS = -Wall -g -std=c++11 -fsanitize=address
 # environment
 GDK_PIXBUF_MODULE_FILE = /home/sabrina/snap/code/common/.cache/gdk-pixbuf-loaders.cache
 # environment
-JOURNAL_STREAM = 8:36601
+JOURNAL_STREAM = 8:47567
 # environment
 XDG_SESSION_CLASS = user
 # environment
@@ -291,6 +289,9 @@ SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd
 
 # . (device 2067, inode 53872087): 21 files, no impossibilities.
 
+ 
+make: *** No rule to make target 'all'.  Stop.
+
 # 21 files, no impossibilities in 1 directories.
 
 # Implicit Rules
@@ -298,12 +299,11 @@ SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd
 # No implicit rules.
 
 # Files
- 
 
 # Not a target:
 Makefile:
 #  Implicit rule search has been done.
-#  Last modified 2022-05-25 22:00:11.078525174
+#  Last modified 2022-05-30 11:36:32.314734323
 #  File has been updated.
 #  Successfully updated.
 
@@ -406,6 +406,6 @@ ExtHashTable.cpp:
 # strcache performance: lookups = 53 / hit rate = 45%
 # hash-table stats:
 # Load=29/8192=0%, Rehash=0, Collisions=0/53=0%
-# Finished Make data base on Sun May 29 20:34:41 2022
+# Finished Make data base on Mon May 30 12:05:51 2022
 
  

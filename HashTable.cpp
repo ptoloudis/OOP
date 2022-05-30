@@ -19,7 +19,7 @@ unsigned long HashTable::getHashCode(const char *str){
 }
 
 HashTable::HashTable(int capacity){
-    if (capacity < 8) {
+    if (capacity < 0) {
         
         throw bad_alloc();
     }
@@ -165,11 +165,15 @@ string HashTable::print() const{
 }
 
 bool HashTable::add(const string &s) {
+    if ("" == s) {
+        return false;
+    }    
+
     if (contains(s)) {
         return false;
     }
     
-    if (size > capacity) {
+    if (size == capacity) {
         
         HashTableException e;
         throw e;

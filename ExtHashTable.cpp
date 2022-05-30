@@ -7,6 +7,10 @@ void ExtHashTable::rehash(){
     string **new_table;
     double ratio = (double)this->size / (double)this->capacity;
 
+    if(size == 0){
+        return;
+    }
+
     if (ratio > upper_bound_ratio)
     {
         
@@ -76,6 +80,8 @@ void ExtHashTable::rehash(){
     {
         return;
     }
+
+    cout << "--> Size: "<< size << ", New capacity: " << capacity << endl;
     
 }
 
@@ -91,18 +97,13 @@ ExtHashTable::ExtHashTable(const ExtHashTable &t): HashTable(t){
 }
 
 bool ExtHashTable::add(const string &str){
-    
-    bool success  = HashTable::add(str);
-
-    if(success){
-        rehash();
-    }
-    return success; 
+    rehash();
+    return HashTable::add(str);
 }
 
 bool ExtHashTable::add(const char *s){
-    string str(s);
-    return add(str);
+    rehash();
+    return HashTable::add(s);
 }
 
 bool ExtHashTable::remove(const string &str){
