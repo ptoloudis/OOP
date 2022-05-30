@@ -1,0 +1,9 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory '/home/sabrina/code/OOP'
+g++ -Wall -g -std=c++11 -fsanitize=address HashTable.cpp -c 
+g++ -Wall -g -std=c++11 -fsanitize=address HashTableIterator.cpp -c 
+g++ -Wall -g -std=c++11 -fsanitize=address ExtHashTable.cpp -c 
+g++ -Wall -g -std=c++11 -fsanitize=address main.cpp -c
+g++ -Wall -g -std=c++11 -fsanitize=address HashTable.o HashTableIterator.o ExtHashTable.o main.o 
+make: Leaving directory '/home/sabrina/code/OOP'
+ 
