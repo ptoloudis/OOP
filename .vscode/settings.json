@@ -5,7 +5,8 @@
         "new": "cpp",
         "vector": "cpp",
         "ostream": "cpp",
-        "sstream": "cpp"
+        "sstream": "cpp",
+        "system_error": "cpp"
     },
     "C_Cpp.errorSquiggles": "Disabled"
 }
