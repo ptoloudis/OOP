@@ -1,0 +1,6 @@
+In file included from GraphInteger.cpp:38:
+GraphUI.hpp: In instantiation of ‘int graphUI() [with T = Integer]’:
+GraphInteger.cpp:41:26:   required from here
+GraphUI.hpp:10:7: warning: unused variable ‘distance’ [-Wunused-variable]
+   10 |   int distance;
+      |       ^~~~~~~~

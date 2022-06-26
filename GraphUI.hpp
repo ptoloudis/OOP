@@ -2,6 +2,7 @@
 #ifndef _GRAPH_UI_
 #define _GRAPH_UI_
 
+#include <iostream>
 template <typename T>
 int graphUI() {
   
@@ -29,7 +30,13 @@ int graphUI() {
         cout << "av " << vtx << " NOK\n";
     }
     else if(!option.compare("rv")) {
-
+      getline(std::cin, line);
+      stream << line;
+      T vtx(stream);
+      if(g.rmvVtx(vtx))
+        cout << "rv " << vtx << " OK\n";
+      else
+        cout << "rv " << vtx << " NOK\n";
     }
     else if(!option.compare("ae")) {
       
@@ -38,6 +45,10 @@ int graphUI() {
 
     }
     else if(!option.compare("dot")) {
+      getline(std::cin, line);
+      line = line.replace(line.find_first_of(" "), 1, "");
+      stream << line;
+      g.print2DotFile(stream.str().c_str());
       
     }
     else if(!option.compare("bfs")) {
@@ -62,7 +73,7 @@ int graphUI() {
       
     }
     else if(!option.compare("mst")) {
-
+      int sum = 0;
       cout << "\n--- Min Spanning Tree ---\n";
       cout << "MST Cost: " << sum << endl;
     }
