@@ -39,28 +39,78 @@ int graphUI() {
         cout << "rv " << vtx << " NOK\n";
     }
     else if(!option.compare("ae")) {
+      string token;
+      std::stringstream token2, token3;
+      int distance;
+      getline(std::cin, line);
+      stream << line;
+      stream >> token;
+      token2 << token;
+      T from(token2);
+      stream >> token;
+      token3 << token;
+      T to(token3);
+      stream >> distance;
+
+      if(g.addEdg(from, to, distance))
+        cout << "ae " << from << " " << to << " OK\n";
+      else
+        cout << "ae " << from << " " << to << " NOK\n";
       
     }
     else if(!option.compare("re")) {
+      string token;
+      std::stringstream token2, token3;
+      getline(std::cin, line);
+      stream << line;
+      stream >> token;
+      token2 << token;
+      T from(token2);
+      stream >> token;
+      token3 << token;
+      T to(token3);
 
+      if(g.rmvEdg(from, to))
+        cout << "re " << from << " " << to << " OK\n";
+      else
+        cout << "re " << from << " " << to << " NOK\n";
+      
     }
     else if(!option.compare("dot")) {
       getline(std::cin, line);
       line = line.replace(line.find_first_of(" "), 1, "");
       stream << line;
-      g.print2DotFile(stream.str().c_str());
-      
+      if(g.print2DotFile(stream.str().c_str()))
+        cout << "dot " << stream.str() << " OK\n";
+      else
+        cout << "dot " << stream.str() << " NOK\n";      
     }
     else if(!option.compare("bfs")) {
-      
+      getline(std::cin, line);
+      stream << line;
+      T vtx(stream);
+      list<T> l = g.bfs(vtx);
       cout << "\n----- BFS Traversal -----\n";
-      
+      for(auto it = l.begin()++; it != l.end(); it++ ) {
+        if (it == l.begin())
+          cout << *it;
+        else
+          cout << " -> " << *it;
+      }
       cout << "\n-------------------------\n";
     }
     else if(!option.compare("dfs")) {
-      
+      getline(std::cin, line);
+      stream << line;
+      T vtx(stream);
+      list<T> l = g.dfs(vtx);
       cout << "\n----- DFS Traversal -----\n";
-      
+      for(auto it = l.begin()++; it != l.end(); it++ ) {
+        if (it == l.begin())
+          cout << *it;
+        else
+          cout << " -> " << *it;
+      }
       cout << "\n-------------------------\n";
     }
     else if(!option.compare("dijkstra")) {

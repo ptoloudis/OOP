@@ -8,7 +8,7 @@ make: *** No rule to make target 'all'.  Stop.
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Sun Jun 26 19:58:31 2022
+# Make data base, printed on Wed Jun 29 20:20:30 2022
 
 # Variables
 
@@ -25,7 +25,7 @@ SNAP_INSTANCE_KEY =
 # environment
 GJS_DEBUG_OUTPUT = stderr
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-a9d2610b-6013-4f0e-9aa5-28dd1ae39eba.sock
+VSCODE_IPC_HOOK_EXTHOST = /run/user/1000/vscode-ipc-a95a10b8-d365-4920-9ebc-c5bb9cf110e1.sock
 # environment
 LC_NAME = el_GR.UTF-8
 # environment
@@ -65,7 +65,7 @@ VSCODE_CODE_CACHE_PATH = /home/sabrina/.config/Code/CachedData/30d9c6cd9483b2cc5
 # environment
 LANG = C
 # environment
-XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.YPS6N1
+XAUTHORITY = /run/user/1000/.mutter-Xwaylandauth.4SZHO1
 # default
 .LOADED := 
 # default
@@ -105,7 +105,7 @@ SNAP_REEXEC =
 # environment
 VSCODE_VERBOSE_LOGGING = true
 # environment
-VSCODE_PID = 30878
+VSCODE_PID = 25853
 # environment
 XDG_SESSION_TYPE = wayland
 # automatic
@@ -113,7 +113,7 @@ XDG_SESSION_TYPE = wayland
 # environment
 BAMF_DESKTOP_FILE_HINT = /var/lib/snapd/desktop/applications/code_code.desktop
 # environment
-SESSION_MANAGER = local/ptbox:@/tmp/.ICE-unix/2051,unix/ptbox:/tmp/.ICE-unix/2051
+SESSION_MANAGER = local/ptbox:@/tmp/.ICE-unix/2046,unix/ptbox:/tmp/.ICE-unix/2046
 # automatic
 *F = $(notdir $*)
 # environment
@@ -161,7 +161,7 @@ LC_TIME = el_GR.UTF-8
 # environment
 SNAP = /snap/code/99
 # environment
-INVOCATION_ID = 9a4da2e4b3f24656831db152785cf747
+INVOCATION_ID = 59aad2df424944f39a056f8422dabb46
 # environment
 SNAP_REVISION = 99
 # environment
@@ -199,7 +199,7 @@ SNAP_ARCH = amd64
 # makefile
 .DEFAULT_GOAL := build
 # environment
-SYSTEMD_EXEC_PID = 2070
+SYSTEMD_EXEC_PID = 2065
 # environment
 DISPLAY = :0
 # environment
@@ -215,11 +215,11 @@ SNAP_DATA = /var/snap/code/99
 # environment
 SNAP_CONTEXT = O2xxwneNRDW4Qhtr8PnO0SGyBZMkrDDh44hGnJ4FnN5-HvasB26v
 # environment
-MANAGERPID = 1913
+MANAGERPID = 1908
 # environment
 LC_MEASUREMENT = el_GR.UTF-8
 # environment
-GIO_LAUNCHED_DESKTOP_FILE_PID = 30830
+GIO_LAUNCHED_DESKTOP_FILE_PID = 25807
 # environment
 _ = /snap/code/99/usr/share/code/code
 # environment
@@ -229,7 +229,7 @@ XDG_RUNTIME_DIR = /run/user/1000
 # environment
 GDK_PIXBUF_MODULE_FILE = /home/sabrina/snap/code/common/.cache/gdk-pixbuf-loaders.cache
 # environment
-JOURNAL_STREAM = 8:47266
+JOURNAL_STREAM = 8:37850
 # environment
 XDG_SESSION_CLASS = user
 # environment
@@ -280,13 +280,13 @@ SNAP_LIBRARY_PATH = /var/lib/snapd/lib/gl:/var/lib/snapd/lib/gl32:/var/lib/snapd
 # Pattern-specific Variable Values
 
 # No pattern-specific variable values.
+ 
 
 # Directories
 
-# . (device 2067, inode 53872087): 19 files, no impossibilities.
+# . (device 2067, inode 53872087): 18 files, no impossibilities.
 
- 
-# 19 files, no impossibilities in 1 directories.
+# 18 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -454,12 +454,12 @@ Graph.hpp:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 39 / storage = 322 B / avg = 8 B
-# current buf: size = 8162 B / used = 322 B / count = 39 / avg = 8 B
+# strcache buffers: 1 (0) / strings = 38 / storage = 313 B / avg = 8 B
+# current buf: size = 8162 B / used = 313 B / count = 38 / avg = 8 B
 
-# strcache performance: lookups = 73 / hit rate = 46%
+# strcache performance: lookups = 72 / hit rate = 47%
 # hash-table stats:
-# Load=39/8192=0%, Rehash=0, Collisions=0/73=0%
-# Finished Make data base on Sun Jun 26 19:58:31 2022
+# Load=38/8192=0%, Rehash=0, Collisions=0/72=0%
+# Finished Make data base on Wed Jun 29 20:20:30 2022
 
  

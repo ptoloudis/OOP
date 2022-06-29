@@ -98,7 +98,7 @@ class Graph {
 public:
   Graph(bool isDirectedGraph = true);
   ~Graph();
-  bool contains(const T& info);
+  bool contains(const T& info) const;
   bool addVtx(const T& info);
   bool rmvVtx(const T& info);
   bool addEdg(const T& from, const T& to, int distance);
@@ -107,7 +107,7 @@ public:
   list<T> bfs(const T& info) const;
   list<Edge<T>> mst();
   
-  void print2DotFile(const char *filename) const;
+  bool print2DotFile(const char *filename) const;
   list<T> dijkstra(const T& from, const T& to);
 };
 
@@ -127,7 +127,7 @@ Graph<T>::~Graph()
 }
 
 template<typename T>
-bool Graph<T>::contains(const T& info)
+bool Graph<T>::contains(const T& info) const
 {
   for (auto it = nodes.begin(); it != nodes.end(); it++)
   {
@@ -157,45 +157,214 @@ bool Graph<T>::rmvVtx(const T& info)
   nodes.remove_if([&info](Node<T> n) { return *n.info == info; }); // remove node with info
   
   for (auto it = nodes.begin(); it != nodes.end(); it++) // remove edges from all node with info
-    for (auto it2 = it->edge.begin(); it2 != it->edge.end(); it2++)
-      if ((*it2).from == info || (*it2).to == info)
-        it->rmvEdge(*it2);
+  {
+    it->rmvEdge(Edge<T>(*it->info, info, 0));
+  }
     
   return true;
 }
 
-
 template<typename T>
-void Graph<T>::print2DotFile(const char *filename) const
-{
-  ofstream out;
-  out.open(filename);
-  out << "digraph G {" << endl;
-  if (isDirected)
-  {
+bool Graph<T>::addEdg(const T& from, const T& to, int distance){
+  if(!contains(from) || !contains(to))
+    return false;
+  
+  if(isDirected){
+    Edge<T> e(from, to, distance);
     for (auto it = nodes.begin(); it != nodes.end(); it++)
     {
-      out << " " << *it->info << endl;
-      for (auto it2 = it->edge.begin(); it2 != it->edge.end(); it2++)
-      {
-        out << "  ->  " << it2->to << " " << endl;
+      if(*it->info == from){
+        if(it->containsEdge(e))
+          return false;
+        else{        
+          it->addEdge(e);
+          return true;
+        }
       }
     }
-    out << "}" << endl;
-    out.close();
   }
-  else
-  {
+  else{
+    Edge<T> e(from, to, distance);
+    Edge<T> e2(to, from, distance);
     for (auto it = nodes.begin(); it != nodes.end(); it++)
     {
-      out << " " << *it->info << endl;
-      for (auto it2 = it->edge.begin(); it2 != it->edge.end(); it2++)
-      {
-        out << "  --  " << it2->to << " " << endl;
-      }  
+      if (*it->info == from){
+        if(it->containsEdge(e))
+          return false;
+        else{        
+          it->addEdge(e);
+        }
+      }
+      if (*it->info == to){
+        if(it->containsEdge(e2))
+          return false;
+        else{        
+          it->addEdge(e2);
+        }
+      }
     }
-    out << "}" << endl;
-    out.close();
+  }
+
+  return true;
+}
+
+template<typename T>
+bool Graph<T>::rmvEdg(const T& from, const T& to){
+  if(!contains(from) || !contains(to))
+    return false;
+  
+  if(isDirected){
+    Edge<T> e(from, to, 0);
+    for (auto it = nodes.begin(); it != nodes.end(); it++)
+    {
+      if(*it->info == from){
+        if(!it->containsEdge(e))
+          return false;
+        else{        
+          it->rmvEdge(e);
+          return true;
+        }
+      }
+    }
+  }
+  else{
+    Edge<T> e(from, to, 0);
+    Edge<T> e2(to, from, 0);
+    for (auto it = nodes.begin(); it != nodes.end(); it++)
+    {
+      if (*it->info == from){
+        if(!it->containsEdge(e))
+          return false;
+        else{        
+          it->rmvEdge(e);
+        }
+      }
+      if (*it->info == to){
+        if(!it->containsEdge(e2))
+          return false;
+        else{        
+          it->rmvEdge(e2);
+        }
+      }
+    }
+  }
+
+  return true;
+}
+
+template<typename T>
+bool find(const T& info, list<T> l){
+  for (auto it = l.begin(); it != l.end(); it++)
+  {
+    if (*it == info)
+      return true;
+  }
+  return false;
+}
+
+template<typename T>
+list<T> Graph<T>::dfs(const T& info) const
+{
+  list<T> res;
+  if(!this->contains(info))
+    return res;
+  
+  list<T> visited;
+  list<T> toVisit;
+  toVisit.push_back(info);
+  while(!toVisit.empty()){
+    T curr = toVisit.back();
+    toVisit.pop_back();
+    if(!find(curr, visited)){
+      visited.push_back(curr);
+      for(auto it = nodes.begin(); it != nodes.end(); it++){
+        if(*it->info == curr){
+          for(auto it2 = it->edge.begin(); it2 != it->edge.end(); it2++){
+            if(!find(it2->to, visited))
+              toVisit.push_back((*it2).to);
+          }
+        }
+      }
+    }
+  }
+  for(auto it = visited.begin(); it != visited.end(); it++){
+    res.push_back(*it);
+  }
+  return res;
+}
+
+template<typename T>
+list<T> Graph<T>::bfs(const T& info) const
+{
+  list<T> res;
+  if(!this->contains(info))
+    return res;
+  
+  list<T> visited;
+  list<T> toVisit;
+  toVisit.push_back(info);
+  while(!toVisit.empty()){
+    T curr = toVisit.front();
+    toVisit.pop_front();
+    if(!find(curr, visited)){
+      visited.push_back(curr);
+      for(auto it = nodes.begin(); it != nodes.end(); it++){
+        if(*it->info == curr){
+          for(auto it2 = it->edge.begin(); it2 != it->edge.end(); it2++){
+            if(!find(it2->to, visited))
+              toVisit.push_back((*it2).to);
+          }
+        }
+      }
+    }
+  }
+  for(auto it = visited.begin(); it != visited.end(); it++){
+    res.push_back(*it);
+  }
+  return res;
+}
+
+
+
+
+
+template<typename T>
+bool Graph<T>::print2DotFile(const char *filename) const
+{
+  ofstream out;
+  try{
+    out.open(filename);
+    out << "digraph G {" << endl;
+    if (isDirected)
+    {
+      for (auto it = nodes.begin(); it != nodes.end(); it++)
+      {
+        out << " " << *it->info << endl;
+        for (auto it2 = it->edge.begin(); it2 != it->edge.end(); it2++)
+        {
+          out << "  ->  " << it2->to << " [" << it2->dist << "]" << endl;
+        }
+      }
+      out << "}" << endl;
+      out.close();
+    }
+    else
+    {
+      for (auto it = nodes.begin(); it != nodes.end(); it++)
+      {
+        out << " " << *it->info << endl;
+        for (auto it2 = it->edge.begin(); it2 != it->edge.end(); it2++)
+        {
+          out << "  --  " << it2->to << " [" << it2->dist << "]"<< endl;
+        }  
+      }
+      out << "}" << endl;
+      out.close();
+    }
+    return true;
+  }
+  catch(...){
+    return false;
   }
 }
 
