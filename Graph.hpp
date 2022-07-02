@@ -7,6 +7,7 @@
 #include <list>
 using namespace std;  
 
+
 // ****************** EDGE ****************** //
 template <typename T>
 struct Edge {
@@ -22,7 +23,8 @@ struct Edge {
 };
 
 template <typename T>
-bool Edge<T>::operator<(const Edge<T>& e) const {
+bool Edge<T>::operator<(const Edge<T>& e) const 
+{
   return dist < e.dist;
 }
 
@@ -33,7 +35,8 @@ bool Edge<T>::operator>(const Edge<T>& e) const
 }
 
 template <typename T>
-std::ostream& operator<<(std::ostream& out, const Edge<T>& e) {
+std::ostream& operator<<(std::ostream& out, const Edge<T>& e) 
+{
   out << e.from << " -- " << e.to << " (" << e.dist << ")";
   return out;
 }
@@ -228,7 +231,8 @@ bool Graph<T>::rmvVtx(const T& info)
 }
 
 template<typename T>
-bool Graph<T>::addEdg(const T& from, const T& to, int distance){
+bool Graph<T>::addEdg(const T& from, const T& to, int distance)
+{
   if(!contains(from) || !contains(to))
     return false;
   
@@ -272,7 +276,8 @@ bool Graph<T>::addEdg(const T& from, const T& to, int distance){
 }
 
 template<typename T>
-bool Graph<T>::rmvEdg(const T& from, const T& to){
+bool Graph<T>::rmvEdg(const T& from, const T& to)
+{
   if(!contains(from) || !contains(to))
     return false;
   
@@ -316,7 +321,8 @@ bool Graph<T>::rmvEdg(const T& from, const T& to){
 }
 
 template<typename T>
-bool find(const T& info, list<T> l){
+bool find(const T& info, list<T> l)
+{
   for (auto it = l.begin(); it != l.end(); it++)
   {
     if (*it == info)
@@ -434,7 +440,6 @@ list<Edge<T>> Graph<T>::mst()
   return res;
 }
 
-
 template<typename T>
 bool Graph<T>::print2DotFile(const char *filename) const
 {
@@ -475,5 +480,35 @@ bool Graph<T>::print2DotFile(const char *filename) const
     return false;
   }
 }
+
+template<typename T>
+list<T> dijkstra(const T& from, const T& to)
+{
+  list<T> res;
+  if(!this->contains(from) || !this->contains(to))
+    return res;
+
+  int dist[this->nodes.size()];
+  bool visited[this->nodes.size()];
+  int parent[this->nodes.size()];
+  for(int i = 0; i < this->nodes.size(); i++){
+    dist[i] = INT_MAX;
+    visited[i] = false;
+    parent[i] = -1;
+  }
+
+  int i;
+  for(auto it = nodes.begin(); it != nodes.end(); it++){
+    if(*it->info == from){
+      i = it - nodes.begin();
+      break;
+    }
+  }
+  dist[i] = 0;
+
+  
+  return res;
+}
+
 
 #endif

@@ -118,6 +118,7 @@ int graphUI() {
       T from(stream);
       T to(stream);
 
+      list<T> l = g.dijkstra(from, to);
       cout << "Dijkstra (" << from << " - " << to <<"): ";
       
     }
