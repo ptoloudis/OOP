@@ -41,7 +41,6 @@ int graphUI() {
     else if(!option.compare("ae")) {
       string token;
       std::stringstream token2, token3;
-      int distance;
       getline(std::cin, line);
       stream << line;
       stream >> token;
@@ -124,7 +123,12 @@ int graphUI() {
     }
     else if(!option.compare("mst")) {
       int sum = 0;
+      list<Edge<T>> l = g.mst();
       cout << "\n--- Min Spanning Tree ---\n";
+      for(auto it = l.begin()++; it != l.end(); it++ ) {
+        cout << it->from << " -- " << it->to << " (" << it->dist << ")" << endl;
+        sum += it->dist;
+      }
       cout << "MST Cost: " << sum << endl;
     }
     else if(!option.compare("q")) {

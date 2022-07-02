@@ -3,6 +3,7 @@
 #define _GRAPH_HPP_
 
 #include <fstream>
+#include <bits/stdc++.h>
 #include <list>
 using namespace std;  
 
@@ -37,12 +38,17 @@ std::ostream& operator<<(std::ostream& out, const Edge<T>& e) {
   return out;
 }
 
+
 // ****************** Node ****************** //
 template <typename T>
 struct Node
 {
   T * info;
   list <Edge<T>> edge;
+  int id;
+
+  Node(T * i, int id): info(i), id(id) {
+  }
   bool addEdge(const Edge<T>& e);
   bool rmvEdge(const Edge<T>& e);
   bool containsEdge(const Edge<T>& e);
@@ -89,11 +95,67 @@ void Node<T>::deleteNode()
   edge.clear();
 }
 
+
+// ****************** UNION ****************** //
+struct Union
+{
+  int *parent, *rnk;
+  int n;
+
+  // Constructor.
+  Union(int n)
+  {
+    // Allocate memory
+    this->n = n;
+    parent = new int[n+1];
+    rnk = new int[n+1];
+
+    // Initially, all vertices are in
+    // different sets and have rank 0.
+    for (int i = 0; i <= n; i++)
+    {
+      rnk[i] = 0;
+
+      //every element is parent of itself
+      parent[i] = i;
+    }
+  }
+  
+  // Find the parent of a node 'u'
+  // Path Compression
+  int find(int u)
+  {
+    /* Make the parent of the nodes in the path
+    from u--> parent[u] point to parent[u] */
+    if (u != parent[u])
+      parent[u] = find(parent[u]);
+    return parent[u];
+  }
+
+  // Union by rank
+  void merge(int x, int y)
+  {
+    x = find(x), y = find(y);
+
+    /* Make tree with smaller height
+    a subtree of the other tree */
+    if (rnk[x] > rnk[y])
+      parent[y] = x;
+    else // If rnk[x] <= rnk[y]
+      parent[x] = y;
+
+    if (rnk[x] == rnk[y])
+      rnk[y]++;
+  }
+};
+
+
 // ****************** Graph ****************** //
 template <typename T>
 class Graph {
   bool isDirected;
   list<Node<T>> nodes;
+  int n;
 
 public:
   Graph(bool isDirectedGraph = true);
@@ -115,6 +177,7 @@ template <typename T>
 Graph<T>::Graph(bool isDirectedGraph)
 {
   isDirected = isDirectedGraph;
+  n = 0;
 }
 
 template <typename T>
@@ -142,9 +205,9 @@ bool Graph<T>::addVtx(const T& info)
 {
   if (contains(info))
     return false;
-  Node<T> n;
-  n.info = new T(info);
-  nodes.push_back(n);
+  Node<T> x(new T(info), n);
+  nodes.push_back(x);
+  n++;
   return true;
 }
 
@@ -324,8 +387,52 @@ list<T> Graph<T>::bfs(const T& info) const
   return res;
 }
 
+template<typename T>
+list<Edge<T>> Graph<T>::mst()
+{
+  list <Edge<T>> all;
+  list <Edge<T>> res;
+  for(auto it = nodes.begin(); it != nodes.end(); it++){
+    for(auto it2 = it->edge.begin(); it2 != it->edge.end(); it2++){
+      all.push_back(*it2);
+    }
+  }
+  all.sort();
 
+  Union ds(nodes.size());
 
+  int i, u, v, set_u, set_v;
+  for(auto it = all.begin(); it != all.end(); it++){
+    // for the first edge
+    i = 0;
+    for(auto it2 = nodes.begin(); it2 != nodes.end(); it2++){
+      if(*it2->info == it->from){
+        break;
+      }
+      i++;
+    }
+    u = i;
+
+    // for the second edge
+    i = 0;
+    for(auto it2 = nodes.begin(); it2 != nodes.end(); it2++){
+      if(*it2->info == it->to){
+        break;
+      }
+      i++;
+    }
+    v = i;
+
+    set_u = ds.find(u);
+    set_v = ds.find(v);
+    if (set_u != set_v){
+      ds.merge(set_u, set_v);
+      res.push_back(*it);
+    }
+  }
+
+  return res;
+}
 
 
 template<typename T>
@@ -334,9 +441,9 @@ bool Graph<T>::print2DotFile(const char *filename) const
   ofstream out;
   try{
     out.open(filename);
-    out << "digraph G {" << endl;
     if (isDirected)
     {
+      out << "digraph G {" << endl;
       for (auto it = nodes.begin(); it != nodes.end(); it++)
       {
         out << " " << *it->info << endl;
@@ -350,6 +457,7 @@ bool Graph<T>::print2DotFile(const char *filename) const
     }
     else
     {
+      out << "graph G {" << endl;
       for (auto it = nodes.begin(); it != nodes.end(); it++)
       {
         out << " " << *it->info << endl;
