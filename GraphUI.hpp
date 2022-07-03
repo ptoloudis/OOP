@@ -79,8 +79,20 @@ int graphUI() {
       getline(std::cin, line);
       line = line.replace(line.find_first_of(" "), 1, "");
       stream << line;
-      if(g.print2DotFile(stream.str().c_str()))
-        cout << "dot " << stream.str() << " OK\n";
+      if(g.print2DotFile(stream.str().c_str())){
+        pid_t pid = fork();
+        if(pid == 0) {
+          string in = stream.str().append(".dot");
+          string out = stream.str().append(".png");
+          execlp("dot", "dot", "-Tpng", in.c_str(), "-o", out.c_str(), nullptr);
+        }
+        else if(pid > 0) {
+          cout << "dot " << stream.str() << " OK\n";
+        }
+        else {
+          cout << "dot " << stream.str() << " NOK\n";
+        }
+      }
       else
         cout << "dot " << stream.str() << " NOK\n";      
     }
@@ -120,7 +132,13 @@ int graphUI() {
 
       list<T> l = g.dijkstra(from, to);
       cout << "Dijkstra (" << from << " - " << to <<"): ";
-      
+      for(auto it = l.rbegin(); it != l.rend(); it++ ) {
+        if (it == l.rbegin())
+          cout << *it;
+        else
+          cout << ", " << *it;
+      }
+      cout << endl;
     }
     else if(!option.compare("mst")) {
       int sum = 0;

@@ -445,17 +445,21 @@ bool Graph<T>::print2DotFile(const char *filename) const
 {
   ofstream out;
   try{
-    out.open(filename);
+    string file(filename);
+    file.append(".dot");
+    out.open(file);
     if (isDirected)
     {
       out << "digraph G {" << endl;
+      int i = 0;
       for (auto it = nodes.begin(); it != nodes.end(); it++)
       {
-        out << " " << *it->info << endl;
+        out << " " << i << " [label=\""<< *it->info <<"\"];" << endl;
         for (auto it2 = it->edge.begin(); it2 != it->edge.end(); it2++)
         {
-          out << "  ->  " << it2->to << " [" << it2->dist << "]" << endl;
+          out << " " << i << "  ->  " << it2->to << " [label=" << it2->dist << "];" << endl;
         }
+        i++;
       }
       out << "}" << endl;
       out.close();
@@ -463,13 +467,15 @@ bool Graph<T>::print2DotFile(const char *filename) const
     else
     {
       out << "graph G {" << endl;
+      int i = 0;
       for (auto it = nodes.begin(); it != nodes.end(); it++)
       {
-        out << " " << *it->info << endl;
+        out << " " << i << " [label=\""<< *it->info <<"\"];" << endl;
         for (auto it2 = it->edge.begin(); it2 != it->edge.end(); it2++)
         {
-          out << "  --  " << it2->to << " [" << it2->dist << "]"<< endl;
+          out << " " << i << "  --  " << it2->to << " [label=" << it2->dist << "];" << endl;
         }  
+        i++;
       }
       out << "}" << endl;
       out.close();
@@ -482,31 +488,89 @@ bool Graph<T>::print2DotFile(const char *filename) const
 }
 
 template<typename T>
-list<T> dijkstra(const T& from, const T& to)
+list<T> Graph<T>::dijkstra(const T& from, const T& to)
 {
   list<T> res;
   if(!this->contains(from) || !this->contains(to))
     return res;
 
   int dist[this->nodes.size()];
-  bool visited[this->nodes.size()];
+  bool visited[this->nodes.size()] = {false};
   int parent[this->nodes.size()];
-  for(int i = 0; i < this->nodes.size(); i++){
+
+  for(int i = 0; i <(int) this->nodes.size(); i++){
     dist[i] = INT_MAX;
-    visited[i] = false;
     parent[i] = -1;
   }
 
-  int i;
+  int i = 0;
   for(auto it = nodes.begin(); it != nodes.end(); it++){
     if(*it->info == from){
-      i = it - nodes.begin();
       break;
     }
+    i++;
   }
-  dist[i] = 0;
 
-  
+  dist[i] = 0;
+  for (int j = 0; j < (int) this->nodes.size(); j++)
+  {
+    int min = INT_MAX;
+    int u= 0;
+    for (int v = 0; v < (int) this->nodes.size(); v++)
+    {
+      if (!visited[v] && dist[v] < min)
+      {
+        min = dist[v];
+        u = v;
+      }
+    }
+    visited[u] = true;
+    typename list<Node<T>>::iterator ptr;
+    ptr = this->nodes.begin();
+    advance(ptr, u);
+
+    
+    int v = 0;
+    for(auto it = nodes.begin(); it != nodes.end(); it++){
+      if(!visited[v]){
+        for(auto it2 = ptr->edge.begin(); it2 != ptr->edge.end(); it2++){
+          if(it2->to == *it->info){
+            if (dist[u] + it2->dist < dist[v])
+            {
+              dist[v] = dist[u] + it2->dist;
+              parent[v] = u;
+            }
+          }
+        }
+      }
+      v++;
+    }
+  }
+
+  int j = 0;
+  for(auto it = nodes.begin(); it != nodes.end(); it++){
+    if(*it->info == to){
+      break;
+    }
+    j++;
+  }
+
+
+  // print the path
+  typename list<Node<T>>::iterator ptr;
+  ptr = this->nodes.begin();
+  if (parent[j] == -1 || parent[i] == -1)
+    return res;
+  while (j != i)
+  {
+    ptr = this->nodes.begin();
+    advance(ptr, j);
+    res.push_back(*ptr->info);
+    j = parent[j];
+  }
+  ptr = this->nodes.begin();
+  advance(ptr, j);
+  res.push_back(*ptr->info);
   return res;
 }
 
