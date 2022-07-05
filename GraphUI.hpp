@@ -3,6 +3,8 @@
 #define _GRAPH_UI_
 
 #include <iostream>
+#include <sys/wait.h>
+#include <unistd.h>
 template <typename T>
 int graphUI() {
   

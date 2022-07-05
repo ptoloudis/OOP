@@ -379,9 +379,14 @@ list<T> Graph<T>::bfs(const T& info) const
       visited.push_back(curr);
       for(auto it = nodes.begin(); it != nodes.end(); it++){
         if(*it->info == curr){
-          for(auto it2 = it->edge.begin(); it2 != it->edge.end(); it2++){
-            if(!find(it2->to, visited))
-              toVisit.push_back((*it2).to);
+          for(auto it2 = nodes.begin(); it2 != nodes.end(); it2++){
+            if(!find(*it2->info, visited)){
+              for(auto it3 = it->edge.begin(); it3 != it->edge.end(); it3++){
+                if(it3->to == *it2->info){
+                  toVisit.push_back(*it2->info);
+                }
+              }
+            }
           }
         }
       }
