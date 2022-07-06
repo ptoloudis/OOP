@@ -1,8 +1,10 @@
 
+FLAGS = -Wall -g -std=c++11 -fsanitize=address 
+
 build: Graph.hpp GraphUI.hpp
-	g++ -Wall -g -std=c++11 GraphString.cpp -o gstr
-	g++ -Wall -g -std=c++11 GraphStudent.cpp -o gstudent
-	g++ -Wall -g -std=c++11 GraphInteger.cpp -o gint
+	g++ $(CFLAGS) GraphString.cpp -o gstr
+	g++ $(CFLAGS) GraphStudent.cpp -o gstudent
+	g++ $(CFLAGS) GraphInteger.cpp -o gint
 	
 bfs1:
 	./gstr < tests/bfs1.in > bfs1.out

@@ -41,16 +41,10 @@ int graphUI() {
         cout << "rv " << vtx << " NOK\n";
     }
     else if(!option.compare("ae")) {
-      string token;
-      std::stringstream token2, token3;
       getline(std::cin, line);
       stream << line;
-      stream >> token;
-      token2 << token;
-      T from(token2);
-      stream >> token;
-      token3 << token;
-      T to(token3);
+      T from(stream);
+      T to(stream);
       stream >> distance;
 
       if(g.addEdg(from, to, distance))
@@ -60,16 +54,10 @@ int graphUI() {
       
     }
     else if(!option.compare("re")) {
-      string token;
-      std::stringstream token2, token3;
       getline(std::cin, line);
       stream << line;
-      stream >> token;
-      token2 << token;
-      T from(token2);
-      stream >> token;
-      token3 << token;
-      T to(token3);
+      T from(stream);
+      T to(stream);
 
       if(g.rmvEdg(from, to))
         cout << "re " << from << " " << to << " OK\n";
@@ -132,7 +120,8 @@ int graphUI() {
       T from(stream);
       T to(stream);
 
-      list<T> l = g.dijkstra(from, to);
+      list<T> l;
+      l = g.dijkstra(from, to);
       cout << "Dijkstra (" << from << " - " << to <<"): ";
       for(auto it = l.rbegin(); it != l.rend(); it++ ) {
         if (it == l.rbegin())

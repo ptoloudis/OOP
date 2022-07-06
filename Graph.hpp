@@ -572,18 +572,26 @@ list<T> Graph<T>::dijkstra(const T& from, const T& to)
   // print the path
   typename list<Node<T>>::iterator ptr;
   ptr = this->nodes.begin();
-  if (parent[j] == -1 || parent[i] == -1)
+  if (parent[j] == -1){
     return res;
+  }
   while (j != i)
   {
     ptr = this->nodes.begin();
     advance(ptr, j);
     res.push_back(*ptr->info);
     j = parent[j];
+    if(j == -1)
+      break;
   }
-  ptr = this->nodes.begin();
-  advance(ptr, j);
-  res.push_back(*ptr->info);
+  if(j != -1){
+    ptr = this->nodes.begin();
+    advance(ptr, j);
+    res.push_back(*ptr->info);
+  }
+  else{
+    res.clear();
+  }
   return res;
 }
 

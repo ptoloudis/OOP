@@ -1,0 +1,28 @@
+digraph	
+av 0	
+av 1	
+av 2	
+av 3	
+av 4	
+av 5	
+av 6	
+av 7	
+av 8	
+ae 0 1 4	
+ae 0 7 8	
+ae 1 2 8	
+ae 1 7 11	
+ae 2 3 7	
+ae 2 5 4	
+ae 2 8 2	
+ae 3 4 9	
+ae 3 5 14	
+ae 4 5 10	
+ae 5 6 2	
+ae 6 7 1	
+ae 6 8 6	
+ae 7 8 7
+dot ha	
+dijkstra 0 8
+dijkstra 8 0
+q
