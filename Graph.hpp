@@ -508,11 +508,12 @@ list<T> Graph<T>::dijkstra(const T& from, const T& to)
     return res;
 
   int dist[this->nodes.size()];
-  bool visited[this->nodes.size()] = {false};
+  bool visited[this->nodes.size()];
   int parent[this->nodes.size()];
 
   for(int i = 0; i <(int) this->nodes.size(); i++){
     dist[i] = INT_MAX;
+    visited[i] = false;
     parent[i] = -1;
   }
 
