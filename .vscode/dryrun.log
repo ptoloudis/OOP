@@ -1,7 +1,4 @@
-make --dry-run --always-make --keep-going --print-directory
-make: Entering directory '/home/sabrina/code/OOP'
-g++ -Wall -g -std=c++11 GraphString.cpp -o gstr
-g++ -Wall -g -std=c++11 GraphStudent.cpp -o gstudent
-g++ -Wall -g -std=c++11 GraphInteger.cpp -o gint
-make: Leaving directory '/home/sabrina/code/OOP'
- 
+make.exe --dry-run --always-make --keep-going --print-directory
+'make.exe' is not recognized as an internal or external command,
+operable program or batch file.
+
