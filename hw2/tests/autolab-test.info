@@ -1,0 +1,63 @@
+
+readPPM:
+  subtest_a:
+     input: landscape_16x8.ppm 
+     output: print ppm (check against landscape_16x8.ppm)
+  subtest_b:
+     input: landscape_16x8.ppm
+     output: print yuv (check against landscape_16x8.yuv)
+
+readYUV:
+  subtest_a:
+     input: landscape_16x8.yuv 
+     output: print ppm (check against readYUV_a.ppm)
+     
+greyscale:
+  subtest_a:
+     input: landscape_16x8.ppm 
+     output: print ppm (check against landscape_16x8_greyscale.ppm)
+     
+double:
+  subtest_a:
+     input: landscape_16x8.ppm
+     output: print ppm (check against landscape_32x16.ppm)
+     
+half:
+  subtest_a:
+     input: landscape_16x8.ppm
+     output: print ppm (check against landscape_8x4.ppm)
+     
+rotate:
+  subtest_a:
+     input: landscape_16x8.ppm
+     output: print ppm (check against landscape_16x8_90deg.ppm)
+  subtest_b:
+     input: landscape_16x8.ppm
+     output: print ppm (check against landscape_16x8_180deg.ppm)
+     
+histogram:
+  subtest_a:
+     input: landscape_16x8.yuv
+     output: check stdout
+  subtest_b:
+     input: landscape.yuv
+     output: check stdout
+  subtest_c:
+     input: lena.yuv
+     output: check stdout
+     
+equalize:
+  subtest_a:
+    input: bar_200x133.ppm
+    output: print ppm (check against bar_200x133_equalized.ppm)
+  subtest_b:
+    input: dangerous_200x112.ppm
+    output: print ppm (check against dangerous_200x112_equalized.ppm)
+  subtest_c:
+    input: dark-room_200x133.ppm
+    output: print ppm (check against dark-room_200x133_equalized.ppm)
+    
+stacking:
+  subtest_a:
+    input: orion_nebula (directory)
+    output: print ppm (check against orion_nebula.ppm)
